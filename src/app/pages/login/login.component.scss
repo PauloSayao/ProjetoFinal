@@ -1,0 +1,148 @@
+$bg-color: #f8f1e7;
+$primary: #2C3E50;
+$accent: #A93226;
+$font-main: 'Playfair Display', serif;
+
+body {
+  margin: 0;
+  font-family: $font-main;
+  background-color: $bg-color;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+.login-container {
+  display: flex;
+  width: 80%;
+  max-width: 1000px;
+  background: white;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  border: 2px solid $accent;
+  @media (max-width: 768px) {
+    flex-direction: column;
+    width: 90%;
+  }
+}
+
+.logo-section {
+  background-color: $primary;
+  color: white;
+  flex: 1;
+  padding: 40px;
+  text-align: center;
+
+  img {
+    max-width: 350px;
+    margin-bottom: 20px;
+    @media (max-width: 768px) {
+      max-width: 200px;
+    }
+  }
+
+  h1 {
+    font-size: 2.5rem;
+    @media (max-width: 768px) {
+      font-size: 1.5rem;
+    }
+  }
+}
+
+.form-section {
+  flex: 1;
+  padding: 40px;
+  background-color: $bg-color;
+
+  @media (max-width: 768px) {
+    padding: 20px;
+  }
+  h2 {
+    color: $accent;
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+
+    @media (max-width: 768px) {
+      font-size: 1.5rem;
+    }
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+
+    label {
+      margin: 10px 0 5px;
+      color: $primary;
+      font-weight: bold;
+    }
+
+    input {
+      padding: 10px;
+      border: 1px solid $accent;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      outline: none;
+    }
+
+    button {
+      background-color: $accent;
+      color: white;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.3s;
+
+      &:hover {
+        background-color: darken($accent, 10%);
+      }
+    }
+
+    .signup {
+      margin-top: 15px;
+      font-size: 0.9rem;
+
+      a {
+        color: $primary;
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .logo-section {
+    padding: 20px;
+
+    img {
+      max-width: 150px;
+    }
+
+    h1 {
+      font-size: 1.2rem;
+    }
+  }
+
+  .form-section {
+    padding: 15px;
+
+    h2 {
+      font-size: 1.2rem;
+    }
+
+    form {
+      button {
+        font-size: 0.9rem;
+        padding: 10px;
+      }
+
+      .signup {
+        font-size: 0.8rem;
+      }
+    }
+  }
+}
