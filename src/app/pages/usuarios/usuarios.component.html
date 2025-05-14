@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Comprar Trufas - TruffleSite</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="site-header">
+    <img src="logo2.png" alt="Logo TruffleSite" class="logo" />
+    <h1>Compre suas Trufas</h1>
+  </header>
+  <section class="highlighted-trufas">
+    <h2>Conheça nossas Trufas Artesanais</h2>
+    <img src="trufasrealistas.jpg" alt="Trufas de chocolate, coco e maracujá" class="trufas-img" />
+  </section>
+
+  <main class="products-section">
+    <div class="product-card" *ngFor="let produto of produtos">
+      <img [src]="produto.image" [alt]="produto.name" />
+      <h2>{{ produto.name }}</h2>
+      <p>{{ produto.descricao }}</p>
+      <span class="price">R$ {{ produto.price | number:'1.2-2' }}</span>
+      <button (click)="addToCart(produto)">Adicionar ao carrinho</button>
+    </div>
+  </main>
+</body>
+</html>
