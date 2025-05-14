@@ -3,6 +3,7 @@ import { LoginComponent } from './pages/login/login.component';
 import { LayoutComponent } from './pages/layout/layout.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { UsuariosComponent } from './pages/usuarios/usuarios.component';
+import { CartComponent } from './pages/cart/cart.component';
 
 export const routes: Routes = [
   {
@@ -17,19 +18,24 @@ export const routes: Routes = [
   {
     path: '',
     component: LayoutComponent,
-    children:[
+    children: [
       {
         path: 'usuarios',
         component: UsuariosComponent,
       },
+
       {
-        path: 'dashboard',
-        component: DashboardComponent,
+        path: 'cart',
+        component: CartComponent,
       },
-    ]
+    ],
+  },
+  {
+    path: 'dashboard',
+    component: DashboardComponent,
   },
   {
     path: '**',
-    redirectTo: 'home',
+    redirectTo: 'usuarios',
   },
 ];
