@@ -2,6 +2,7 @@ import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { CartService, Product } from '../../cart/cart.service';
 import { CommonModule } from '@angular/common';
+import { OrderService } from '../../order/order.service';
 @Component({
   selector: 'app-cart-dialog',
   templateUrl: './cart-dialog.component.html',
@@ -12,6 +13,7 @@ export class CartDialogComponent {
   constructor(
     @Inject(MAT_DIALOG_DATA) public cartItems: Product[],
     private cartService: CartService,
+    private orderService: OrderService,
     public dialogRef: MatDialogRef<CartDialogComponent>
   ) {}
 
@@ -28,4 +30,15 @@ export class CartDialogComponent {
     this.cartService.clearCart();
     this.dialogRef.close();
   }
-}
+    pedidosRecebidos: Product[][] = [];
+
+
+
+    finalizarCompra() {
+      this.orderService.addPedido([...this.cartItems]);
+      this.clear();
+      this.dialogRef.close();
+    }
+  }
+
+

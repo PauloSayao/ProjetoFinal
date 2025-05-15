@@ -2,8 +2,11 @@ $bg-color: #f8f1e7;
 $primary: #2C3E50;
 $accent: #A93226;
 $font-main: 'Playfair Display', serif;
-
+html {
+  height: 100dvh;
+}
 body {
+
   margin: 0;
   font-family: $font-main;
   background-color: $bg-color;
@@ -14,7 +17,7 @@ body {
   background-color: $primary;
   color: white;
   text-align: center;
-  padding: 20px;
+  padding: 0 0 20px;
 
   .logo {
     max-height: 60px;
@@ -31,7 +34,7 @@ body {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 30px;
-  padding: 40px;
+  padding: 0 40px;
 }
 
 .product-card {
@@ -43,7 +46,7 @@ body {
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
 
   img {
-    max-width: 330px;
+    max-width: 200px;
     height: 160px;
     object-fit: fill;
     border-radius: 10px;
@@ -88,6 +91,7 @@ body {
   margin-bottom: 40px;
 
   h2 {
+    padding: 20px 0 0  0 ;
     color: $accent;
     font-size: 1.8rem;
     margin-bottom: 20px;
@@ -99,6 +103,28 @@ body {
     object-fit: fill;
     border-radius: 12px;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  }
+}
+@media (max-width: 1100px) {
+  .product-card {
+    img {
+      max-width: 160px;
+      height: 160px;
+      object-fit: cover;
+      border-radius: 10px;
+      margin-bottom: 15px;
+    }
+  }
+}
+@media (max-width: 600px) {
+  .product-card {
+    img {
+      max-width: 300px;
+      height: 160px;
+      object-fit: cover;
+      border-radius: 10px;
+      margin-bottom: 15px;
+    }
   }
 }
 
@@ -122,5 +148,13 @@ body {
       font-size: 0.9rem;
       padding: 8px 12px;
     }
+    img {
+      max-width: 160px;
+      height: 160px;
+      object-fit: cover;
+      border-radius: 10px;
+      margin-bottom: 15px;
+    }
   }
+
 }

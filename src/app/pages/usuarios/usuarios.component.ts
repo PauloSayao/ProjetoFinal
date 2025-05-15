@@ -34,7 +34,15 @@ export class UsuariosComponent {
       image: 'trufacoco.jpg',
       descricao: 'Recheio de coco com cobertura de chocolate ao leite.',
       quantity: 1
-    }
+    },
+    // {
+    //   id:4,
+    //   name: 'Trufa de Limão',
+    //   price: 5.50,
+    //   image: 'trufalimão.jpg',
+    //   descricao: 'Trufa refrescante com recheio de limão siciliano.',
+    //   quantity: 1
+    // }
   ];
 
   constructor(private cartService: CartService) {}
