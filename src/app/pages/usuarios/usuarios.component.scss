@@ -1,12 +1,11 @@
 $bg-color: #f8f1e7;
-$primary: #2C3E50;
-$accent: #A93226;
-$font-main: 'Playfair Display', serif;
+$primary: #2c3e50;
+$accent: #a93226;
+$font-main: "Playfair Display", serif;
 html {
   height: 100dvh;
 }
 body {
-
   margin: 0;
   font-family: $font-main;
   background-color: $bg-color;
@@ -91,7 +90,7 @@ body {
   margin-bottom: 40px;
 
   h2 {
-    padding: 20px 0 0  0 ;
+    padding: 20px 0 0 0;
     color: $accent;
     font-size: 1.8rem;
     margin-bottom: 20px;
@@ -111,7 +110,7 @@ body {
   padding: 2rem;
 
   h2 {
-    font-family: 'Playfair Display', serif;
+    font-family: "Playfair Display", serif;
     font-size: 2rem;
     color: $accent;
     margin-bottom: 1rem;
@@ -158,6 +157,9 @@ body {
 }
 
 @media (max-width: 1100px) {
+  main {
+    background-color: $bg-color;
+  }
   .product-card {
     img {
       max-width: 160px;
@@ -177,6 +179,13 @@ body {
       border-radius: 10px;
       margin-bottom: 15px;
     }
+  }
+}
+.carousel-wrapper {
+  img {
+    width: 240px;
+    height: 160px;
+    object-fit: cover;
   }
 }
 
@@ -208,5 +217,4 @@ body {
       margin-bottom: 15px;
     }
   }
-
 }
