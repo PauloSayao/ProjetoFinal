@@ -85,83 +85,45 @@ app.get("/vehicles", (req, res) => {
   }
 });
 
-app.post("/vehicleData", (req, res) => {
-  try {
-    const { vin } = req.body;
+const pedidosSalvos = [];
+let pedidoIdCounter = 1;
 
-    switch (vin) {
-      case "2FRHDUYS2Y63NHD22454":
-        return res.status(200).json({
-          id: 1,
-          odometro: 23344,
-          nivelCombustivel: 76,
-          status: "on",
-          lat: -12.2322,
-          long: -35.2314,
-        });
+app.post("/pedidos", (req, res) => {
+  const { produtos } = req.body;
 
-      case "2RFAASDY54E4HDU34874":
-        return res.status(200).json({
-          id: 2,
-          odometro: 130000,
-          nivelCombustivel: 19,
-          status: "off",
-          lat: -12.2322,
-          long: -35.2314,
-        });
-
-      case "2FRHDUYS2Y63NHD22455":
-        return res.status(200).json({
-          id: 3,
-          odometro: 50000,
-          nivelCombustivel: 90,
-          status: "on",
-          lat: -12.2322,
-          long: -35.2314,
-        });
-
-      case "2RFAASDY54E4HDU34875":
-        return res.status(200).json({
-          id: 4,
-          odometro: 10000,
-          nivelCombustivel: 25,
-          status: "off",
-          lat: -12.2322,
-          long: -35.2314,
-        });
-
-      case "2FRHDUYS2Y63NHD22654":
-        return res.status(200).json({
-          id: 5,
-          odometro: 23544,
-          nivelCombustivel: 76,
-          status: "on",
-          lat: -12.2322,
-          long: -35.2314,
-        });
-
-      case "2FRHDUYS2Y63NHD22854":
-        return res.status(200).json({
-          id: 6,
-          odometro: 23574,
-          nivelCombustivel: 76,
-          status: "on",
-          lat: -12.2322,
-          long: -35.2314,
-        });
-
-      default:
-        return res.status(400).json({
-          message: "Código VIN utilizado não foi encontrado!",
-        });
-    }
-  } catch (error) {
-    return res.status(500).json({
-      message: "Falha na comunicação com o servidor!",
-    });
+  if (!produtos || !Array.isArray(produtos)) {
+    return res.status(400).json({ message: "Pedido inválido!" });
   }
+
+  const novoPedido = {
+    id: pedidoIdCounter++,
+    produtos
+  };
+
+  pedidosSalvos.push(novoPedido);
+  return res.status(201).json({ message: "Pedido salvo com sucesso!" });
 });
 
+app.get("/pedidos", (req, res) => {
+  return res.status(200).json({ pedidos: pedidosSalvos });
+});
+
+app.delete("/pedidos/:id", (req, res) => {
+  const id = parseInt(req.params.id);
+  const index = pedidosSalvos.findIndex(p => p.id === id);
+
+  if (index === -1) {
+    return res.status(404).json({ message: "Pedido não encontrado!" });
+  }
+
+  pedidosSalvos.splice(index, 1);
+  return res.status(200).json({ message: "Pedido removido com sucesso!" });
+});
+
+app.delete("/pedidos", (req, res) => {
+  pedidosSalvos.length = 0;
+  return res.status(200).json({ message: "Todos os pedidos foram removidos!" });
+});
 app.listen(3001, () => {
   console.log("API running on http://localhost:3001/");
 });

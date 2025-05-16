@@ -57,5 +57,32 @@ export class UsuariosComponent {
 
     this.cartService.addToCart(item);
   }
+  trufas: string[] = [
+    'trufasmistas.jpg',
+    'trufasmistas2.jpg',
+    'trufasrealistas.jpg'
+  ];
+
+  currentIndex = 0;
+  intervalId: any;
+
+  ngOnInit() {
+    this.intervalId = setInterval(() => {
+      this.next();
+    }, 4000);
+  }
+
+  ngOnDestroy() {
+    clearInterval(this.intervalId);
+  }
+
+  next() {
+    this.currentIndex = (this.currentIndex + 1) % this.trufas.length;
+  }
+
+  prev() {
+    this.currentIndex = (this.currentIndex - 1 + this.trufas.length) % this.trufas.length;
+  }
+
   }
 

@@ -57,17 +57,47 @@ $font-main: "Playfair Display", serif;
   }
 
   button {
-    background-color: $accent;
+    margin-top: 1rem;
+    background-color: $primary;
     color: white;
     border: none;
-    padding: 0.3rem 0.6rem;
-    border-radius: 5px;
+    padding: 0.3rem 0.7rem;
+    border-radius: 8px;
     cursor: pointer;
+    float: right;
     transition: background 0.3s;
-    white-space: nowrap;
 
     &:hover {
-      background-color: darken($accent, 10%);
+      background-color: lighten($primary, 10%);
+    }
+  }
+}
+.botoes-final {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 1.5rem;
+
+  button {
+    background-color: $primary;
+    color: white;
+    border: none;
+    padding: 0.4rem 0.9rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s;
+    font-size: 1rem;
+
+    &:hover {
+      background-color: lighten($primary, 10%);
+    }
+
+    &.finalizar {
+      background-color: $accent;
+
+      &:hover {
+        background-color: darken($accent, 10%);
+      }
     }
   }
 }
@@ -133,12 +163,12 @@ $font-main: "Playfair Display", serif;
     text-align: right;
   }
 
-  > button {
+   button {
     margin-top: 1rem;
     background-color: $primary;
     color: white;
     border: none;
-    padding: 0.5rem 1rem;
+    padding: 0.3rem 0.7rem;
     border-radius: 8px;
     cursor: pointer;
     float: right;
@@ -149,7 +179,9 @@ $font-main: "Playfair Display", serif;
     }
   }
 }
-
+.finalizar{
+  margin-left: 5%;
+}
 .carrinhovazio {
   background-color: $bg-color;
   color: $primary;

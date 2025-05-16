@@ -1,40 +1,43 @@
 import { Injectable } from '@angular/core';
 import { Product } from '../../app/cart/cart.service';
-
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+export interface Pedido {
+    id: number;
+    produtos: Product[];
+  }
 @Injectable({
   providedIn: 'root',
 })
+
 export class OrderService {
-  private pedidos: Product[][] = [];
 
-  constructor() {
-    const dadosSalvos = localStorage.getItem('pedidos');
-    if (dadosSalvos) {
-      this.pedidos = JSON.parse(dadosSalvos);
-    }
+  private apiUrl = 'http://localhost:3001/pedidos';
+
+  constructor(private http: HttpClient) {}
+
+  addPedido(produtos: Product[]): void {
+    this.http.post(this.apiUrl, { produtos }).subscribe({
+      next: res => console.log('Pedido enviado:', res),
+      error: err => console.error('Erro ao enviar pedido:', err)
+    });
   }
 
-  addPedido(pedido: Product[]) {
-    this.pedidos.push(pedido);
-    this.salvarNoLocalStorage();
+  getPedidos(): Observable<Pedido[]> {
+    return this.http.get<{ pedidos: Pedido[] }>(this.apiUrl)
+      .pipe(map(res => res.pedidos));
   }
 
-  getPedidos(): Product[][] {
-    return this.pedidos;
+  removePedido(id: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/${id}`);
   }
 
-  private salvarNoLocalStorage() {
-    localStorage.setItem('pedidos', JSON.stringify(this.pedidos));
-  }
-
-  limparPedidos() {
-    this.pedidos = [];
-    localStorage.removeItem('pedidos');
-  }
-
-  removePedido(index: number) {
-    this.pedidos.splice(index, 1);
-    this.salvarNoLocalStorage();
+  limparPedidos(): Observable<any> {
+    return this.http.delete(this.apiUrl);
   }
 }
+
+
+
 

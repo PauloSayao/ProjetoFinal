@@ -20,6 +20,10 @@ export class CartService {
     return this.items.value;
   }
 
+  updateCart(newCart: Product[]) {
+    this.items.next([...newCart]);
+  }
+
   addToCart(product: Product) {
     const current = this.items.value;
     const existing = current.find(p => p.id === product.id);
