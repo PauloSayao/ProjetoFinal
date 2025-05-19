@@ -7,7 +7,7 @@ import { OrderService } from '../../order/order.service';
   selector: 'app-cart-dialog',
   templateUrl: './cart-dialog.component.html',
   imports: [CommonModule],
-  styleUrls: ['./cart-dialog.component.scss']
+  styleUrls: ['./cart-dialog.component.scss'],
 })
 export class CartDialogComponent {
   constructor(
@@ -18,11 +18,14 @@ export class CartDialogComponent {
   ) {}
 
   get total() {
-    return this.cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+    return this.cartItems.reduce(
+      (sum, item) => sum + item.price * item.quantity,
+      0
+    );
   }
 
   addItem(id: number) {
-    const item = this.cartItems.find(p => p.id === id);
+    const item = this.cartItems.find((p) => p.id === id);
     if (item) {
       this.cartService.addToCart(item);
       this.cartItems = this.cartService.getCartItems();
@@ -30,7 +33,7 @@ export class CartDialogComponent {
   }
 
   removeItem(id: number) {
-    const item = this.cartItems.find(p => p.id === id);
+    const item = this.cartItems.find((p) => p.id === id);
     if (item && item.quantity > 1) {
       item.quantity -= 1;
       this.cartService.updateCart(this.cartItems);
@@ -44,14 +47,10 @@ export class CartDialogComponent {
     this.cartService.clearCart();
     this.dialogRef.close();
   }
-    pedidosRecebidos: Product[][] = [];
+  pedidosRecebidos: Product[][] = [];
 
-
-
-    finalizarCompra() {
-      this.orderService.addPedido([...this.cartItems]);
-      this.clear();
-    }
+  finalizarCompra() {
+    this.orderService.addPedido([...this.cartItems]);
+    this.clear();
   }
-
-
+}

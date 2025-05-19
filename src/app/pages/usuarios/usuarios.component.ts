@@ -1,39 +1,42 @@
+import { Router, RouterModule } from '@angular/router';
 import { Component } from '@angular/core';
 import { CartService } from '../../cart/cart.service';
 import { Product } from '../../cart/cart.service';
 import { CommonModule } from '@angular/common';
+import { MatMenuModule } from '@angular/material/menu';
 
 @Component({
   selector: 'app-usuarios',
-  imports: [CommonModule],
+  imports: [CommonModule,RouterModule,MatMenuModule],
   templateUrl: './usuarios.component.html',
-  styleUrl: './usuarios.component.scss'
+  styleUrl: './usuarios.component.scss',
 })
 export class UsuariosComponent {
   produtos = [
     {
       id: 1,
       name: 'Trufa de Chocolate',
-      price: 5.00,
+      price: 5.0,
       image: 'trufachocolate.jpg',
-      descricao: 'Deliciosa trufa recheada com ganache de chocolate meio amargo.',
-      quantity: 1
+      descricao:
+        'Deliciosa trufa recheada com ganache de chocolate meio amargo.',
+      quantity: 1,
     },
     {
       id: 2,
       name: 'Trufa de Maracujá',
-      price: 5.50,
+      price: 5.5,
       image: 'trufamaracuja.jpg',
       descricao: 'Trufa cremosa com recheio de maracujá e cobertura branca.',
-      quantity: 1
+      quantity: 1,
     },
     {
       id: 3,
       name: 'Trufa de Coco',
-      price: 5.00,
+      price: 5.0,
       image: 'trufacoco.jpg',
       descricao: 'Recheio de coco com cobertura de chocolate ao leite.',
-      quantity: 1
+      quantity: 1,
     },
     // {
     //   id:4,
@@ -45,14 +48,14 @@ export class UsuariosComponent {
     // }
   ];
 
-  constructor(private cartService: CartService) {}
+  constructor(private cartService: CartService, private router: Router) {}
   addToCart(produto: any) {
     const item: Product = {
       id: produto.id,
       name: produto.name,
       price: produto.price,
       image: produto.image,
-      quantity: produto.quantity ?? 1
+      quantity: produto.quantity ?? 1,
     };
 
     this.cartService.addToCart(item);
@@ -60,7 +63,7 @@ export class UsuariosComponent {
   trufas: string[] = [
     'trufasmistas.jpg',
     'trufasmistas2.jpg',
-    'trufasrealistas.jpg'
+    'trufasrealistas.jpg',
   ];
 
   currentIndex = 0;
@@ -81,8 +84,12 @@ export class UsuariosComponent {
   }
 
   prev() {
-    this.currentIndex = (this.currentIndex - 1 + this.trufas.length) % this.trufas.length;
+    this.currentIndex =
+      (this.currentIndex - 1 + this.trufas.length) % this.trufas.length;
   }
 
+  logout() {
+    localStorage.removeItem('user');
+    this.router.navigate(['/login']);
   }
-
+}

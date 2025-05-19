@@ -4,6 +4,8 @@ import { LayoutComponent } from './pages/layout/layout.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { UsuariosComponent } from './pages/usuarios/usuarios.component';
 import { CartComponent } from './pages/cart/cart.component';
+import { AdminGuard } from './guard/admin.guard';
+import { AuthGuard } from './guard/usuarios.guard';
 
 export const routes: Routes = [
   {
@@ -22,6 +24,7 @@ export const routes: Routes = [
       {
         path: 'usuarios',
         component: UsuariosComponent,
+        canActivate: [AuthGuard],
       },
 
       {
@@ -33,6 +36,7 @@ export const routes: Routes = [
   {
     path: 'dashboard',
     component: DashboardComponent,
+    canActivate: [AdminGuard],
   },
   {
     path: '**',

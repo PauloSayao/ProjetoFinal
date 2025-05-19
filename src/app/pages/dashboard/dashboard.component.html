@@ -3,9 +3,10 @@
     <h2>TruffleSite</h2>
     <nav>
       <ul>
-        <li><a href="#">Início</a></li>
-        <li><a href="#">Pedidos</a></li>
-        <li><a href="#">Configurações</a></li>
+        <li><button (click)="ToHome()">Início</button></li>
+        <li><button (click)="ToOrder()" >Pedidos</button></li>
+        <li><button (click)="ToConfiguration()">Configurações</button></li>
+        <li><button (click)="logout()"> Logout</button></li>
       </ul>
     </nav>
   </aside>

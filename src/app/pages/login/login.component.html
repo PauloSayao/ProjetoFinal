@@ -8,24 +8,58 @@
   <link rel="" href="" />
 </head>
 <body>
-  <div class="login-container">
-    <div class="logo-section">
-      <img src="logo2.png" alt="Logo TruffleSite" />
-      <h1></h1>
+  <div class="auth-wrapper">
+
+    <div class="login-container" *ngIf="!isRegistering">
+      <div class="logo-section">
+        <img src="logo2.png" alt="Logo TruffleSite" />
+        <h1>TruffleSite</h1>
+      </div>
+      <div class="form-section">
+        <h2>Entrar na sua conta</h2>
+          <form (ngSubmit)="login()">
+            <input type="text" [(ngModel)]="name" name="name" placeholder="Usuário" required>
+            <input type="password" [(ngModel)]="password" name="password" placeholder="Senha" required>
+            <button type="submit">Entrar</button>
+
+          <p class="signup">Não tem conta?<button type="button" (click)="toggleMode()" class="link-button">Cadastre-se</button></p>
+        </form>
+      </div>
     </div>
-    <div class="form-section">
-      <h2>Entrar na sua conta</h2>
-      <form>
-        <label for="email">E-mail</label>
-        <input type="email" id="email" placeholder="seu@email.com" />
 
-        <label for="password">Senha</label>
-        <input type="password" id="password" placeholder="Insira sua senha" />
+    <div class="register-container" *ngIf="isRegistering">
+      <div class="form-section">
+        <h2>Criar conta</h2>
+        <form (ngSubmit)="register()">
+          <label for="register-name">Usuário</label>
+          <input type="text" id="register-name" [(ngModel)]="registerName" name="registerName" placeholder="Nome de usuário" required />
 
-        <button type="submit">Entrar</button>
-        <p class="signup">Não tem conta? <a href="#">Cadastre-se</a></p>
-      </form>
+          <label for="name">Nome completo</label>
+          <input type="text" id="name" [(ngModel)]="registerName" name="registerName" placeholder="Seu nome" required />
+
+          <label for="register-email">E-mail</label>
+          <input type="email" id="register-email" [(ngModel)]="registerEmail" name="registerEmail" placeholder="seu@email.com" required />
+
+          <label for="register-password">Senha</label>
+          <input type="password" id="register-password" [(ngModel)]="registerPassword" name="registerPassword" placeholder="Crie uma senha" required />
+
+          <label class="checkbox-container">
+            <input type="checkbox" [(ngModel)]="consentLGPD" name="consentLGPD" required />
+            <span>
+              Li e concordo com a
+              <a href="/politica-de-privacidade" target="_blank">Política de Privacidade</a>
+              e autorizo o uso dos meus dados conforme a LGPD.
+            </span>
+          </label>
+
+          <button type="submit">Cadastrar</button>
+
+
+          <p class="login">Já tem uma conta? <button type="button" (click)="toggleMode()" class="link-button">Entrar</button></p>
+       </form>
+   </div>
     </div>
   </div>
+
 </body>
 </html>
