@@ -52,6 +52,7 @@ app.post("/register", (req, res) => {
     password,
     email,
     fullName,
+    telephone,
     role: "user" // todos os novos são usuários comuns
   };
 

@@ -12,6 +12,7 @@ import { MatMenuModule } from '@angular/material/menu';
   styleUrl: './usuarios.component.scss',
 })
 export class UsuariosComponent {
+  userName: string = '';
   produtos = [
     {
       id: 1,
@@ -49,15 +50,8 @@ export class UsuariosComponent {
   ];
 
   constructor(private cartService: CartService, private router: Router) {}
-  addToCart(produto: any) {
-    const item: Product = {
-      id: produto.id,
-      name: produto.name,
-      price: produto.price,
-      image: produto.image,
-      quantity: produto.quantity ?? 1,
-    };
-
+  addToCart(produto: Product) {
+    const item: Product = { ...produto, quantity: produto.quantity ?? 1 };
     this.cartService.addToCart(item);
   }
   trufas: string[] = [
@@ -70,9 +64,14 @@ export class UsuariosComponent {
   intervalId: any;
 
   ngOnInit() {
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+    console.log(user);
+    this.userName = user.name || 'Usuário';
     this.intervalId = setInterval(() => {
       this.next();
     }, 4000);
+
+
   }
 
   ngOnDestroy() {
@@ -92,4 +91,5 @@ export class UsuariosComponent {
     localStorage.removeItem('user');
     this.router.navigate(['/login']);
   }
+
 }

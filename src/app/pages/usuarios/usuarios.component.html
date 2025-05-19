@@ -10,15 +10,21 @@
   <header class="site-header">
     <img src="logo2.png" alt="Logo TruffleSite" class="logo" />
     <h1>Compre suas Trufas</h1>
-    <div class="perfil-button-wrapper">
-      <button [mat-menu-trigger-for]="sidemenu" class="list">
-        <img class="perfil" src="perfil.png" alt="Perfil" />
-      </button>
+
+    <div class="perfil-wrapper">
+      <span class="welcome-message">Bem-vindo, {{ userName }}</span>
+      <div class="perfil-button-wrapper">
+        <button [mat-menu-trigger-for]="sidemenu" class="list">
+          <img class="perfil" src="perfil.png" alt="Perfil" />
+        </button>
+      </div>
     </div>
+
     <mat-menu #sidemenu>
       <button class="btn-list" mat-menu-item (click)="logout()">Logout</button>
     </mat-menu>
   </header>
+
   <section class="highlighted-trufas">
     <h2>Conheça nossas Trufas Artesanais</h2>
 

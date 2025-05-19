@@ -23,6 +23,7 @@ export class LoginComponent {
   fullName = '';
   registerEmail = '';
   registerPassword = '';
+  registerTelephone = '';
   consentLGPD = false;
 
   constructor(
@@ -71,7 +72,8 @@ export class LoginComponent {
         name: this.registerName,
         fullName: this.fullName,
         email: this.registerEmail,
-        password: this.registerPassword
+        password: this.registerPassword,
+        telephone: this.registerTelephone
       })
 
       .subscribe({

@@ -35,7 +35,10 @@
           <input type="text" id="register-name" [(ngModel)]="registerName" name="registerName" placeholder="Nome de usuário" required />
 
           <label for="name">Nome completo</label>
-          <input type="text" id="name" [(ngModel)]="registerName" name="registerName" placeholder="Seu nome" required />
+          <input type="text" id="name" [(ngModel)]="fullName" name="registerName" placeholder="Seu nome" required />
+          <label for="telephone">Telefone</label>
+
+          <input type="number" id="telephone" [(ngModel)]="registerTelephone" name="registerTelephone" placeholder="Seu numero" required />
 
           <label for="register-email">E-mail</label>
           <input type="email" id="register-email" [(ngModel)]="registerEmail" name="registerEmail" placeholder="seu@email.com" required />
