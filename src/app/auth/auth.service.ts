@@ -26,6 +26,9 @@ export class AuthService {
     });
   }
 
+  setCurrentUser(user: any) {
+    // Lógica para armazenar o usuário
+  }
   getUser() {
     return this.userData || JSON.parse(localStorage.getItem('user') || '{}');
   }

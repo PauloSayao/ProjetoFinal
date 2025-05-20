@@ -16,18 +16,26 @@ import { environment } from '../../../environments/environment';
 })
 export class LoginComponent {
   isRegistering = false;
+  isLoading = false; // Adicionado estado de loading
+  errorMessage = ''; // Para feedback de erros
 
-  // Campos para login
-  name = '';
-  password = '';
 
-  // Campos para registro
-  registerName = '';
-  fullName = '';
-  registerEmail = '';
-  registerPassword = '';
-  registerTelephone = '';
-  consentLGPD = false;
+ // Campos para login
+ loginForm = {
+  name: '',
+  password: ''
+};
+
+// Campos para registro
+registerForm = {
+  name: '',
+  fullName: '',
+  email: '',
+  password: '',
+  telephone: '',
+  consentLGPD: false
+};
+
 
   constructor(
     private authService: AuthService,
@@ -37,58 +45,56 @@ export class LoginComponent {
 
   toggleMode() {
     this.isRegistering = !this.isRegistering;
+    this.errorMessage = '';
   }
 
   login() {
-
-    this.http
-      .post<any>(`${environment.apiUrl}/login`, {
-        name: this.name,
-        password: this.password,
-      })
-
-      .subscribe({
-        next: (res) => {
-          localStorage.setItem('user', JSON.stringify(res));
-          if (res.role === 'admin') {
-            this.router.navigate(['/dashboard']);
-          } else {
-            this.router.navigate(['/usuarios']);
-          }
-        },
-
-        error: (err) => {
-          alert(err.error.message || 'Erro ao fazer login.');
-        },
-
-      });
-  }
-
-  register() {
-    if (!this.consentLGPD) {
-      alert('Você deve aceitar a política de privacidade (LGPD).');
+    if (!this.loginForm.name || !this.loginForm.password) {
+      this.errorMessage = 'Preencha todos os campos';
       return;
     }
 
-    this.http
-      .post<any>('http://localhost:3001/register', {
-        name: this.registerName,
-        fullName: this.fullName,
-        email: this.registerEmail,
-        password: this.registerPassword,
-        telephone: this.registerTelephone
-      })
+    this.isLoading = true;
 
+    this.http.post<any>(`${environment.apiUrl}/login`, {
+      name: this.loginForm.name,
+      password: this.loginForm.password
+    }).subscribe({
+      next: (res) => {
+        this.authService.setCurrentUser(res);
+        localStorage.setItem('user', JSON.stringify(res));
+
+        const redirect = res.role === 'admin' ? '/dashboard' : '/usuarios';
+        this.router.navigate([redirect]);
+      },
+      error: (err) => {
+        this.errorMessage = err.error?.message || 'Erro ao fazer login. Verifique suas credenciais.';
+        this.isLoading = false;
+      },
+      complete: () => this.isLoading = false
+    });
+  }
+
+  register() {
+    if (!this.registerForm.consentLGPD) {
+      this.errorMessage = 'Você deve aceitar a política de privacidade (LGPD).';
+      return;
+    }
+
+    const { consentLGPD, ...formData } = this.registerForm;
+
+    this.isLoading = true;
+
+    this.http.post<any>(`${environment.apiUrl}/register`, formData)
       .subscribe({
         next: (res) => {
           alert('Cadastro realizado com sucesso!');
-          this.toggleMode(); // volta para login
+          this.toggleMode();
         },
-
         error: (err) => {
-          alert(err.error.message || 'Erro ao cadastrar.');
+          this.errorMessage = err.error?.message || 'Erro ao cadastrar. Tente novamente.';
         },
-
+        complete: () => this.isLoading = false
       });
   }
 }
