@@ -4,6 +4,7 @@ import { CartService } from '../../cart/cart.service';
 import { Product } from '../../cart/cart.service';
 import { CommonModule } from '@angular/common';
 import { MatMenuModule } from '@angular/material/menu';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-usuarios',
@@ -12,61 +13,34 @@ import { MatMenuModule } from '@angular/material/menu';
   styleUrl: './usuarios.component.scss',
 })
 export class UsuariosComponent {
-  userName: string = '';
-  produtos = [
-    {
-      id: 1,
-      name: 'Trufa de Chocolate',
-      price: 5.0,
-      image: 'trufachocolate.jpg',
-      descricao:
-        'Deliciosa trufa recheada com ganache de chocolate meio amargo.',
-      quantity: 1,
-    },
-    {
-      id: 2,
-      name: 'Trufa de Maracujá',
-      price: 5.5,
-      image: 'trufamaracuja.jpg',
-      descricao: 'Trufa cremosa com recheio de maracujá e cobertura branca.',
-      quantity: 1,
-    },
-    {
-      id: 3,
-      name: 'Trufa de Coco',
-      price: 5.0,
-      image: 'trufacoco.jpg',
-      descricao: 'Recheio de coco com cobertura de chocolate ao leite.',
-      quantity: 1,
-    },
-    // {
-    //   id:4,
-    //   name: 'Trufa de Limão',
-    //   price: 5.50,
-    //   image: 'trufalimão.jpg',
-    //   descricao: 'Trufa refrescante com recheio de limão siciliano.',
-    //   quantity: 1
-    // }
-  ];
 
-  constructor(private cartService: CartService, private router: Router) {}
+  userName: string = '';
+  produtos: Product[] = [];
+  trufas: string[] = ['trufasmistas.jpg', 'trufasmistas2.jpg', 'trufasrealistas.jpg'];
+  currentIndex = 0;
+  intervalId: any;
+   
+  
+
+  constructor(
+    private cartService: CartService, 
+    private router: Router, 
+    private http: HttpClient
+  ) {}
   addToCart(produto: Product) {
     const item: Product = { ...produto, quantity: produto.quantity ?? 1 };
     this.cartService.addToCart(item);
   }
-  trufas: string[] = [
-    'trufasmistas.jpg',
-    'trufasmistas2.jpg',
-    'trufasrealistas.jpg',
-  ];
-
-  currentIndex = 0;
-  intervalId: any;
 
   ngOnInit() {
     const user = JSON.parse(localStorage.getItem('user') || '{}');
-    console.log(user);
     this.userName = user.name || 'Usuário';
+
+    this.http.get<Product[]>('http://localhost:3001/produtos')
+    .subscribe((res) => {
+      this.produtos = res.filter(p => p.ativo);
+    });
+
     this.intervalId = setInterval(() => {
       this.next();
     }, 4000);

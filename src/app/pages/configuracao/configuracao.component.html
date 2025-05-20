@@ -1,0 +1,38 @@
+<div class="dashboard-container">
+  <aside class="sidebar">
+    <h2>TruffleSite</h2>
+    <nav>
+      <ul>
+        <li><button (click)="ToHome()">Início</button></li>
+        <li><button (click)="ToOrder()">Pedidos</button></li>
+        <li><button (click)="ToConfiguration()">Configurações</button></li>
+        <li><button (click)="logout()">Logout</button></li>
+      </ul>
+    </nav>
+  </aside>
+
+  <main class="main-content">
+    <header class="main-header">
+      <h1>Bem-vindo de volta!</h1>
+    </header>
+
+    <section class="produto-scroll-container">
+      <article
+        *ngFor="let produto of produtos"
+        class="produto-item"
+        [class.inativo]="!produto.ativo"
+        tabindex="0"
+      >
+        <img [src]="produto.image" [alt]="produto.name" width="100" />
+        <div class="produto-info">
+          <h3>{{ produto.name }}</h3>
+          <p>{{ produto.descricao }}</p>
+          <p><strong>R$ {{ produto.price | number: '1.2-2' }}</strong></p>
+          <button (click)="ativarOuDesativarProduto(produto.id)">
+            {{ produto.ativo ? 'Desativar' : 'Ativar' }}
+          </button>
+        </div>
+      </article>
+    </section>
+  </main>
+</div>

@@ -23,16 +23,18 @@
       <div *ngIf="pedidos.length === 0">
         <p>Nenhum pedido encontrado.</p>
       </div>
-
       <div class="pedidoslist" *ngFor="let pedido of pedidos">
-        <h3>Pedido</h3>
-        <ul>
-          <li *ngFor="let p of pedido.produtos">
-            {{ p.name }} - {{ p.quantity }} x {{ p.price | currency }}
-          </li>
-        </ul>
-        <button (click)="removerPedido(pedido.id)">Entregue</button>
-      </div>
+
+      <h3>Pedido</h3>
+      <p><strong>Nome:</strong> {{ pedido.nome }}</p>
+      <p><strong>Telefone:</strong> {{ pedido.telefone }}</p>
+      <ul>
+        <li *ngFor="let p of pedido.produtos">
+          {{ p.name }} - {{ p.quantity }} x {{ p.price | currency }}
+        </li>
+      </ul>
+      <button class="remover-pedido" (click)="removerPedido(pedido.id)">Entregue</button>
+    </div>
 
       <button (click)="limparPedidos()">Limpar Todos os Pedidos</button>
     </section>

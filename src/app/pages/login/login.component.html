@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -7,6 +8,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&display=swap" rel="stylesheet">
   <link rel="" href="" />
 </head>
+
 <body>
   <div class="auth-wrapper">
 
@@ -17,12 +19,13 @@
       </div>
       <div class="form-section">
         <h2>Entrar na sua conta</h2>
-          <form (ngSubmit)="login()">
-            <input type="text" [(ngModel)]="name" name="name" placeholder="Usuário" required>
-            <input type="password" [(ngModel)]="password" name="password" placeholder="Senha" required>
-            <button type="submit">Entrar</button>
+        <form (ngSubmit)="login()">
+          <input type="text" [(ngModel)]="name" name="name" placeholder="Usuário" required>
+          <input type="password" [(ngModel)]="password" name="password" placeholder="Senha" required>
+          <button type="submit">Entrar</button>
 
-          <p class="signup">Não tem conta?<button type="button" (click)="toggleMode()" class="link-button">Cadastre-se</button></p>
+          <p class="signup">Não tem conta?<button type="button" (click)="toggleMode()"
+              class="link-button">Cadastre-se</button></p>
         </form>
       </div>
     </div>
@@ -32,19 +35,23 @@
         <h2>Criar conta</h2>
         <form (ngSubmit)="register()">
           <label for="register-name">Usuário</label>
-          <input type="text" id="register-name" [(ngModel)]="registerName" name="registerName" placeholder="Nome de usuário" required />
+          <input type="text" id="register-name" [(ngModel)]="registerName" name="registerName"
+            placeholder="Nome de usuário" required />
 
           <label for="name">Nome completo</label>
           <input type="text" id="name" [(ngModel)]="fullName" name="registerName" placeholder="Seu nome" required />
           <label for="telephone">Telefone</label>
 
-          <input type="number" id="telephone" [(ngModel)]="registerTelephone" name="registerTelephone" placeholder="Seu numero" required />
+          <input type="text" id="telephone" [(ngModel)]="registerTelephone" name="registerTelephone"
+            placeholder="Seu número" mask="(00) 00000-0000" required />
 
           <label for="register-email">E-mail</label>
-          <input type="email" id="register-email" [(ngModel)]="registerEmail" name="registerEmail" placeholder="seu@email.com" required />
+          <input type="email" id="register-email" [(ngModel)]="registerEmail" name="registerEmail"
+            placeholder="seu@email.com" required />
 
           <label for="register-password">Senha</label>
-          <input type="password" id="register-password" [(ngModel)]="registerPassword" name="registerPassword" placeholder="Crie uma senha" required />
+          <input type="password" id="register-password" [(ngModel)]="registerPassword" name="registerPassword"
+            placeholder="Crie uma senha" required />
 
           <label class="checkbox-container">
             <input type="checkbox" [(ngModel)]="consentLGPD" name="consentLGPD" required />
@@ -58,11 +65,13 @@
           <button type="submit">Cadastrar</button>
 
 
-          <p class="login">Já tem uma conta? <button type="button" (click)="toggleMode()" class="link-button">Entrar</button></p>
-       </form>
-   </div>
+          <p class="login">Já tem uma conta? <button type="button" (click)="toggleMode()"
+              class="link-button">Entrar</button></p>
+        </form>
+      </div>
     </div>
   </div>
 
 </body>
+
 </html>

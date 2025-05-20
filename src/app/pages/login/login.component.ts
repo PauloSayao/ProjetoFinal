@@ -4,10 +4,12 @@ import { Component } from '@angular/core';
 import { AuthService } from '../../auth/auth.service';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
 
 @Component({
   selector: 'app-login',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, NgxMaskDirective],
+  providers: [provideNgxMask()],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
 })

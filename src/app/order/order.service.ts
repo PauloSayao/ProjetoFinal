@@ -6,6 +6,8 @@ import { map } from 'rxjs/operators';
 export interface Pedido {
     id: number;
     produtos: Product[];
+    nome: string;
+    telefone: string;
   }
 @Injectable({
   providedIn: 'root',
@@ -17,17 +19,17 @@ export class OrderService {
 
   constructor(private http: HttpClient) {}
 
-  addPedido(produtos: Product[]): void {
-    this.http.post(this.apiUrl, { produtos }).subscribe({
-      next: res => console.log('Pedido enviado:', res),
-      error: err => console.error('Erro ao enviar pedido:', err)
-    });
+  addPedido(pedido: { produtos: Product[], nome: string, telefone: string }) {
+    return this.http.post('http://localhost:3001/pedidos', pedido);
   }
+  
 
   getPedidos(): Observable<Pedido[]> {
-    return this.http.get<{ pedidos: Pedido[] }>(this.apiUrl)
-      .pipe(map(res => res.pedidos));
+    return this.http.get<{ pedidos: Pedido[] }>(this.apiUrl).pipe(
+      map(response => response.pedidos)
+    );
   }
+  
 
   removePedido(id: number): Observable<any> {
     return this.http.delete(`${this.apiUrl}/${id}`);

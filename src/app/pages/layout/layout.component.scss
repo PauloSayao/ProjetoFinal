@@ -9,7 +9,10 @@
   align-items: center;
 
   padding: 1rem;
-  background-color: #2C3E50;
+  background-color: transparent;
   width: auto;
   height: 64px;
+  button{
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  }
 }

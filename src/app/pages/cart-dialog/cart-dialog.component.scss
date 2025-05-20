@@ -3,106 +3,32 @@ $primary: #2c3e50;
 $accent: #a93226;
 $font-main: "Playfair Display", serif;
 
-::ng-deep .mat-mdc-dialog-container {
-  background-color: transparent !important;
-  box-shadow: none !important;
+// === MIXINS ===
+@mixin botao($bg) {
+  background-color: $bg;
+  color: white;
+  border: none;
+  padding: 0.3rem 0.7rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+
+  &:hover {
+    background-color: lighten($bg, 10%);
+  }
 }
 
-::ng-deep .mdc-dialog__container {
-  background-color: transparent !important;
-}
-
+// === DIALOG OVERRIDE ===
+::ng-deep .mat-mdc-dialog-container,
+::ng-deep .mdc-dialog__container,
 ::ng-deep .mdc-dialog__surface {
   background-color: transparent !important;
   box-shadow: none !important;
   border-radius: 0 !important;
 }
 
-.item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  padding: 0.75rem 0;
-  border-bottom: 1px solid lighten($primary, 40%);
-
-  img {
-    border-radius: 6px;
-    width: 50px;
-    height: auto;
-    flex-shrink: 0;
-  }
-
-  .info {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-
-    strong {
-      font-size: 1rem;
-    }
-
-    span {
-      font-size: 0.9rem;
-      color: darken($primary, 20%);
-    }
-  }
-
-  .preco {
-    min-width: 90px;
-    text-align: right;
-    font-weight: bold;
-    white-space: nowrap;
-  }
-
-  button {
-    margin-top: 1rem;
-    background-color: $primary;
-    color: white;
-    border: none;
-    padding: 0.3rem 0.7rem;
-    border-radius: 8px;
-    cursor: pointer;
-    float: right;
-    transition: background 0.3s;
-
-    &:hover {
-      background-color: lighten($primary, 10%);
-    }
-  }
-}
-.botoes-final {
-  display: flex;
-  justify-content: flex-end;
-  gap: 1rem;
-  margin-top: 1.5rem;
-
-  button {
-    background-color: $primary;
-    color: white;
-    border: none;
-    padding: 0.4rem 0.9rem;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background 0.3s;
-    font-size: 1rem;
-
-    &:hover {
-      background-color: lighten($primary, 10%);
-    }
-
-    &.finalizar {
-      background-color: $accent;
-
-      &:hover {
-        background-color: darken($accent, 10%);
-      }
-    }
-  }
-}
-
-.carrinho {
+// === CARRINHO ===
+.carrinho, .carrinhovazio {
   background-color: $bg-color;
   color: $primary;
   font-family: $font-main;
@@ -111,50 +37,13 @@ $font-main: "Playfair Display", serif;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   max-width: 700px;
   margin: 2rem auto;
+}
 
-
-  margin: 1rem 0;
+.carrinho {
   h2 {
     margin-bottom: 1rem;
     font-size: 1.8rem;
     color: $accent;
-  }
-
-  div[ng-reflect-ng-for-of] {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0.5rem 0;
-    border-bottom: 1px solid lighten($primary, 40%);
-
-    img {
-      border-radius: 6px;
-      margin-right: 1rem;
-    }
-
-    strong {
-      flex: 1;
-      font-size: 1rem;
-    }
-
-    span {
-      font-weight: bold;
-      margin: 0 1rem;
-    }
-
-    button {
-      background-color: $accent;
-      color: white;
-      border: none;
-      padding: 0.3rem 0.6rem;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: background 0.3s;
-
-      &:hover {
-        background-color: darken($accent, 10%);
-      }
-    }
   }
 
   p {
@@ -163,34 +52,77 @@ $font-main: "Playfair Display", serif;
     text-align: right;
   }
 
-   button {
-    margin-top: 1rem;
-    background-color: $primary;
-    color: white;
-    border: none;
-    padding: 0.3rem 0.7rem;
-    border-radius: 8px;
-    cursor: pointer;
-    float: right;
-    transition: background 0.3s;
+  .botoes-final {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 1.5rem;
 
-    &:hover {
-      background-color: lighten($primary, 10%);
+    button {
+      @include botao($primary);
+      font-size: 1rem;
+
+      &.finalizar {
+        @include botao($accent);
+
+        &:hover {
+          background-color: darken($accent, 10%);
+        }
+      }
+    }
+  }
+
+  .item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid lighten($primary, 40%);
+    animation: fadeIn 0.4s ease-in;
+
+    img {
+      border-radius: 6px;
+      width: 50px;
+      height: auto;
+      flex-shrink: 0;
+    }
+
+    .info {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+
+      strong {
+        font-size: 1rem;
+      }
+
+      span {
+        font-size: 0.9rem;
+        color: darken($primary, 20%);
+      }
+    }
+
+    .preco {
+      min-width: 90px;
+      text-align: right;
+      font-weight: bold;
+      white-space: nowrap;
+    }
+
+    button {
+      @include botao($primary);
+      margin-top: 0.5rem;
+    }
+
+    .mais {
+      margin-left: 0.5rem;
     }
   }
 }
-.finalizar{
-  margin-left: 5%;
-}
+
 .carrinhovazio {
-  background-color: $bg-color;
-  color: $primary;
-  font-family: $font-main;
-  padding: 1rem;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  max-width: 700px;
-  margin: 2rem auto;
   text-align: center;
 
   p {
@@ -198,11 +130,24 @@ $font-main: "Playfair Display", serif;
   }
 }
 
+// === ANIMAÇÃO ===
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// === RESPONSIVIDADE ===
 @media (max-width: 600px) {
   .carrinho {
     padding: 0.5rem;
 
-    div[ng-reflect-ng-for-of] {
+    .item {
       flex-direction: column;
       align-items: flex-start;
 
@@ -210,43 +155,20 @@ $font-main: "Playfair Display", serif;
         margin-bottom: 0.5rem;
       }
 
-      strong,
-      span,
-      button {
-        margin: 0.2rem 0;
+      .preco {
+        margin-top: 0.5rem;
+        text-align: left;
       }
 
-      span {
-        text-align: left;
+      button {
+        align-self: flex-end;
       }
     }
 
     p,
-    > button {
+    .botoes-final button {
       text-align: center;
-      float: none;
       width: 100%;
-    }
-  }
-}
-
-@media (max-width: 500px) {
-  .item {
-    flex-direction: column;
-    align-items: flex-start;
-
-    .info {
-      width: 100%;
-    }
-
-    .preco {
-      margin-top: 0.5rem;
-      text-align: left;
-    }
-
-    button {
-      align-self: flex-end;
-      margin-top: 0.5rem;
     }
   }
 }

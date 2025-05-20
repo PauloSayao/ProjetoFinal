@@ -6,6 +6,7 @@ import { UsuariosComponent } from './pages/usuarios/usuarios.component';
 import { CartComponent } from './pages/cart/cart.component';
 import { AdminGuard } from './guard/admin.guard';
 import { AuthGuard } from './guard/usuarios.guard';
+import { ConfiguracaoComponent } from './pages/configuracao/configuracao.component';
 
 export const routes: Routes = [
   {
@@ -38,6 +39,12 @@ export const routes: Routes = [
     component: DashboardComponent,
     canActivate: [AdminGuard],
   },
+  {
+    path: 'configuracao',
+    component: ConfiguracaoComponent,
+    canActivate: [AdminGuard],
+  },
+  
   {
     path: '**',
     redirectTo: 'usuarios',

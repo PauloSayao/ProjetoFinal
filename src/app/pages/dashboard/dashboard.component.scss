@@ -26,21 +26,35 @@ $font-main: 'Playfair Display', serif;
   nav ul {
     list-style: none;
     padding: 0;
-
+  
     li {
       margin: 1rem 0;
-
-      a {
+  
+      button {
+        width: 100%;
+        padding: 0.6rem 1rem;
+        background-color: transparent;
+        border: 2px solid #fff;
         color: #fff;
-        text-decoration: none;
-        font-weight: 500;
-
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background-color 0.2s ease, color 0.2s ease;
+  
         &:hover {
-          text-decoration: underline;
+          background-color: lighten($primary, 10%);
+          color: #000;
+        }
+  
+        &:focus {
+          outline: none;
+          box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3);
         }
       }
     }
   }
+  
 }
 
 .main-content {
@@ -120,3 +134,30 @@ $font-main: 'Playfair Display', serif;
     }
   }
 }
+
+@media (max-width: 768px) {
+  .dashboard-container {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    text-align: center;
+
+    nav ul {
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+    }
+
+    li {
+      flex: 1 1 40%;
+      margin: 0.5rem;
+    }
+  }
+
+  .main-content {
+    padding: 1rem;
+  }
+}
+

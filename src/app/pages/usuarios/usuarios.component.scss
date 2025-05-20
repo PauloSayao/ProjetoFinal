@@ -5,7 +5,7 @@ $font-main: "Playfair Display", serif;
 html {
   height: 100dvh;
 }
-body {
+header,section,main {
   margin: 0;
   font-family: $font-main;
   background-color: $bg-color;
