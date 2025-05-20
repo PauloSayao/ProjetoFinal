@@ -5,6 +5,7 @@ import { AuthService } from '../../auth/auth.service';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-login',
@@ -41,7 +42,7 @@ export class LoginComponent {
   login() {
 
     this.http
-      .post<any>('http://localhost:3001/login', {
+      .post<any>(`${environment.apiUrl}/login`, {
         name: this.name,
         password: this.password,
       })
