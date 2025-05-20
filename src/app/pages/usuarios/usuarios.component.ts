@@ -5,6 +5,7 @@ import { Product } from '../../cart/cart.service';
 import { CommonModule } from '@angular/common';
 import { MatMenuModule } from '@angular/material/menu';
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-usuarios',
@@ -19,12 +20,12 @@ export class UsuariosComponent {
   trufas: string[] = ['trufasmistas.jpg', 'trufasmistas2.jpg', 'trufasrealistas.jpg'];
   currentIndex = 0;
   intervalId: any;
-   
-  
+
+
 
   constructor(
-    private cartService: CartService, 
-    private router: Router, 
+    private cartService: CartService,
+    private router: Router,
     private http: HttpClient
   ) {}
   addToCart(produto: Product) {
@@ -36,7 +37,7 @@ export class UsuariosComponent {
     const user = JSON.parse(localStorage.getItem('user') || '{}');
     this.userName = user.name || 'Usuário';
 
-    this.http.get<Product[]>('http://localhost:3001/produtos')
+    this.http.get<Product[]>(`${environment.apiUrl}/produtos`)
     .subscribe((res) => {
       this.produtos = res.filter(p => p.ativo);
     });
