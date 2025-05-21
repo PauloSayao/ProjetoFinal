@@ -30,11 +30,12 @@ export class UsuariosComponent {
     this.cartService.addToCart(item);
   }
 
+  
   ngOnInit() {
     const user = JSON.parse(localStorage.getItem('user') || '{}');
     this.userName = user.name || 'Usuário';
 
-    this.http.get<Product[]>('http://localhost:3001/produtos')
+    this.http.get<Product[]>('/api/produtos')
     .subscribe((res) => {
       this.produtos = res.filter(p => p.ativo);
     });

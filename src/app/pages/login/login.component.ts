@@ -41,7 +41,7 @@ export class LoginComponent {
   login() {
 
     this.http
-      .post<any>('http://localhost:3001/login', {
+      .post<any>('/api/login', {
         name: this.name,
         password: this.password,
       })
@@ -70,7 +70,7 @@ export class LoginComponent {
     }
 
     this.http
-      .post<any>('http://localhost:3001/register', {
+      .post<any>('/api/register', {
         name: this.registerName,
         fullName: this.fullName,
         email: this.registerEmail,
