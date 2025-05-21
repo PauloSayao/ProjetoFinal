@@ -4,6 +4,7 @@ import { OrderService, Pedido } from '../../order/order.service';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 
+
 @Component({
   selector: 'app-dashboard',
   standalone: true,
@@ -20,18 +21,18 @@ export class DashboardComponent implements OnInit {
     this.loadPedidos();
   }
   loadPedidos() {
-    this.orderService.getPedidos().subscribe({
-      next: dados => {
-        const pedidosLocais = JSON.parse(localStorage.getItem('pedidosLocais') || '[]');
-        this.pedidos = [...dados, ...pedidosLocais];
-      },
-      error: err => {
-        console.error('Erro ao carregar pedidos da API:', err);
-        const pedidosLocais = JSON.parse(localStorage.getItem('pedidosLocais') || '[]');
-        this.pedidos = pedidosLocais;
-      }
-    });
-  }
+  this.orderService.getPedidos().subscribe({
+    next: dados => {
+      const pedidosLocais = JSON.parse(localStorage.getItem('pedidosLocais') || '[]') as Pedido[];
+      this.pedidos = [...dados, ...pedidosLocais];
+    },
+    error: err => {
+      console.error('Erro ao carregar pedidos da API:', err);
+      const pedidosLocais = JSON.parse(localStorage.getItem('pedidosLocais') || '[]') as Pedido[];
+      this.pedidos = pedidosLocais;
+    }
+  });
+}
 
   limparPedidos() {
     this.orderService.limparPedidos().subscribe({
