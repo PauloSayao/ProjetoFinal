@@ -4,11 +4,13 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 export interface Pedido {
-    id: number;
-    produtos: Product[];
-    nome: string;
-    telefone: string;
-  }
+  id: number;
+  produtos: Product[];
+  nome: string;
+  telefone: string;
+  data?: string;
+  origem?: 'api' | 'local';
+}
 @Injectable({
   providedIn: 'root',
 })
@@ -16,7 +18,7 @@ export class OrderService {
 
   private apiUrl = '/api/pedidos';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   addPedido(pedido: { produtos: Product[], nome: string, telefone: string }) {
     return this.http.post('/api/pedidos', pedido);
