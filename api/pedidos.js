@@ -1,4 +1,4 @@
-import { pedidos } from './dados.js';
+import { pedidos } from '../api/dados.js';
 
 // export const config = { runtime: 'edge' };
 

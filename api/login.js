@@ -1,4 +1,4 @@
-import { users } from '../dados.js';
+import { users } from '../api/dados.js';
 
 // export const config = { runtime: 'edge' };
 
