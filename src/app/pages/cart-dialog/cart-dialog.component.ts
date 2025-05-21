@@ -2,7 +2,7 @@ import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { CartService, Product } from '../../cart/cart.service';
 import { CommonModule } from '@angular/common';
-import { OrderService } from '../../order/order.service';
+import { OrderService,Pedido } from '../../order/order.service';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { AuthService } from '../../auth/auth.service';
 @Component({
@@ -59,12 +59,12 @@ export class CartDialogComponent {
     const user = JSON.parse(localStorage.getItem('user') || '{}');
 
     const pedido = {
-       id: Date.now(),
+      id: Date.now(),
       produtos: [...this.cartItems],
       nome: user.name || '',
       telefone: user.telephone || '',
       data: new Date().toISOString(),
-      origem: 'local'
+      origem: 'local' as const
     };
 
     console.log('Pedido a ser enviado:', pedido);
@@ -83,10 +83,9 @@ export class CartDialogComponent {
         console.error('Erro ao enviar pedido para API:', err);
 
         // Fallback: salva localmente
-        const pedidosLocais = JSON.parse(localStorage.getItem('pedidosPendentes') || '[]');
+        const pedidosLocais: Pedido[] = JSON.parse(localStorage.getItem('pedidosLocais') || '[]');
         pedidosLocais.push(pedido);
-        localStorage.setItem('pedidosPendentes', JSON.stringify(pedidosLocais));
-
+        localStorage.setItem('pedidosLocais', JSON.stringify(pedidosLocais));
         this.clear();
         this.snackBar.open(
           'Pedido salvo localmente. Será enviado quando a conexão for restabelecida.',
