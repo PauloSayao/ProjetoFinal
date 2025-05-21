@@ -14,21 +14,21 @@ export interface Pedido {
 })
 export class OrderService {
 
-  private apiUrl = 'http://localhost:3001/pedidos';
+  private apiUrl = '/api/pedidos';
 
   constructor(private http: HttpClient) {}
 
   addPedido(pedido: { produtos: Product[], nome: string, telefone: string }) {
-    return this.http.post('http://localhost:3001/pedidos', pedido);
+    return this.http.post('/api/pedidos', pedido);
   }
-  
+
 
   getPedidos(): Observable<Pedido[]> {
     return this.http.get<{ pedidos: Pedido[] }>(this.apiUrl).pipe(
       map(response => response.pedidos)
     );
   }
-  
+
 
   removePedido(id: number): Observable<any> {
     return this.http.delete(`${this.apiUrl}/${id}`);

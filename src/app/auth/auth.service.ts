@@ -8,7 +8,7 @@ export class AuthService {
   userData: any = null;
   constructor(private http: HttpClient, private router: Router) {}
   login(name: string, password: string) {
-    return this.http.post<any>('http://localhost:3001/login', { name, password }).subscribe({
+    return this.http.post<any>('/api/login', { name, password }).subscribe({
       next: (res) => {
         this.userData = res;
         localStorage.setItem('user', JSON.stringify(res));
