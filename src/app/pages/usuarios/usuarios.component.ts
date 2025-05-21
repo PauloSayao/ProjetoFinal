@@ -12,7 +12,7 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
   standalone: true,
   imports: [CommonModule, MatMenuModule, MatSnackBarModule],
   templateUrl: './usuarios.component.html',
-  styleUrls: ['./usuarios.component.scss']
+  styleUrls: ['./usuarios.component.scss'],
 })
 export class UsuariosComponent implements OnInit, OnDestroy {
   userName: string = 'Usuário';
@@ -23,7 +23,7 @@ export class UsuariosComponent implements OnInit, OnDestroy {
   trufas: string[] = [
     'trufasmistas.jpg',
     'trufasmistas2.jpg',
-    'trufasrealistas.jpg'
+    'trufasrealistas.jpg',
   ];
   currentIndex = 0;
   intervalId: any;
@@ -34,20 +34,49 @@ export class UsuariosComponent implements OnInit, OnDestroy {
       id: 1,
       name: 'Trufa de Chocolate',
       price: 5.0,
-      image: 'assets/images/trufachocolate.jpg',
-      descricao: 'Deliciosa trufa recheada com ganache de chocolate meio amargo.',
+      image: 'trufachocolate.jpg',
+      descricao:
+        'Deliciosa trufa recheada com ganache de chocolate meio amargo.',
       quantity: 1,
-      ativo: true
+      ativo: true,
     },
     {
       id: 2,
+      name: 'Trufa de Maracujá',
+      price: 5.5,
+      image: 'trufamaracuja.jpg',
+      descricao: 'Trufa cremosa com recheio de maracujá e cobertura branca.',
+      quantity: 1,
+      ativo: true,
+    },
+    {
+      id: 3,
+      name: 'Trufa de Coco',
+      price: 5.0,
+      image: 'trufacoco.jpg',
+      descricao: 'Recheio de coco com cobertura de chocolate ao leite.',
+      quantity: 1,
+      ativo: true,
+    },
+    {
+      id: 4,
+      name: 'Trufa de Limão',
+      price: 5.5,
+      image: 'trufalimão.jpg',
+      descricao: 'Trufa refrescante com recheio de limão siciliano.',
+      quantity: 1,
+      ativo: false,
+    },
+    {
+      id: 5,
       name: 'Trufa de Morango',
       price: 5.5,
-      image: 'assets/images/trufamorango.jpg',
-      descricao: 'Trufa cremosa com recheio de morango e cobertura branca.',
+      image: 'trufamorango.jpg',
+      descricao:
+        'Trufa com recheio de morango e cobertura de chocolate ao leite.',
       quantity: 1,
-      ativo: true
-    }
+      ativo: false,
+    },
   ];
 
   constructor(
@@ -79,18 +108,22 @@ export class UsuariosComponent implements OnInit, OnDestroy {
   private loadProducts() {
     this.http.get<Product[]>('/api/produtos').subscribe({
       next: (res) => {
-        this.produtos = res.filter(p => p.ativo);
+        this.produtos = res.filter((p) => p.ativo);
         this.loading = false;
       },
       error: (err) => {
         console.error('Erro ao carregar produtos, usando fallback:', err);
         this.produtos = this.fallbackProducts;
         this.loading = false;
-        this.snackBar.open('Erro ao carregar produtos. Mostrando dados locais.', 'Fechar', {
-          duration: 5000,
-          panelClass: ['error-snackbar']
-        });
-      }
+        this.snackBar.open(
+          'Erro ao carregar produtos. Mostrando dados locais.',
+          'Fechar',
+          {
+            duration: 5000,
+            panelClass: ['error-snackbar'],
+          }
+        );
+      },
     });
   }
 
@@ -105,7 +138,7 @@ export class UsuariosComponent implements OnInit, OnDestroy {
     this.cartService.addToCart(item);
     this.snackBar.open(`${produto.name} adicionado ao carrinho!`, 'Fechar', {
       duration: 3000,
-      panelClass: ['success-snackbar']
+      panelClass: ['success-snackbar'],
     });
   }
 
@@ -114,7 +147,8 @@ export class UsuariosComponent implements OnInit, OnDestroy {
   }
 
   prev() {
-    this.currentIndex = (this.currentIndex - 1 + this.trufas.length) % this.trufas.length;
+    this.currentIndex =
+      (this.currentIndex - 1 + this.trufas.length) % this.trufas.length;
   }
 
   logout() {
