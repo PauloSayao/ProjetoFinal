@@ -27,6 +27,7 @@
       <h3>Pedido</h3>
       <p><strong>Nome:</strong> {{ pedido.nome }}</p>
       <p><strong>Telefone:</strong> {{ pedido.telefone }}</p>
+      <p *ngIf="pedido.origem === 'local'" style="color: orange;">⚠️ Pedido salvo localmente</p>
       <ul>
         <li *ngFor="let p of pedido.produtos">
           {{ p.name }} - {{ p.quantity }} x {{ p.price | currency }}

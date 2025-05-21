@@ -14,17 +14,25 @@ import { RouterModule, Router } from '@angular/router';
 export class DashboardComponent implements OnInit {
   pedidos: Pedido[] = [];
 
-  constructor(private orderService: OrderService, private router: Router) {}
+  constructor(private orderService: OrderService, private router: Router) { }
 
   ngOnInit() {
     this.loadPedidos();
   }
   loadPedidos() {
     this.orderService.getPedidos().subscribe({
-      next: dados => this.pedidos = dados,
-      error: err => console.error('Erro ao carregar pedidos:', err)
+      next: dados => {
+        const pedidosLocais = JSON.parse(localStorage.getItem('pedidosLocais') || '[]');
+        this.pedidos = [...dados, ...pedidosLocais];
+      },
+      error: err => {
+        console.error('Erro ao carregar pedidos da API:', err);
+        const pedidosLocais = JSON.parse(localStorage.getItem('pedidosLocais') || '[]');
+        this.pedidos = pedidosLocais;
+      }
     });
   }
+
   limparPedidos() {
     this.orderService.limparPedidos().subscribe({
       next: () => this.pedidos = [],
@@ -41,13 +49,13 @@ export class DashboardComponent implements OnInit {
     localStorage.removeItem('user');
     this.router.navigate(['/login']);
   }
-  ToHome(){
+  ToHome() {
     this.router.navigate(['/login']);
   }
-  ToOrder(){
+  ToOrder() {
     this.router.navigate(['/dashboard']);
   }
-  ToConfiguration(){
+  ToConfiguration() {
     this.router.navigate(['/configuracao']);
   }
 }

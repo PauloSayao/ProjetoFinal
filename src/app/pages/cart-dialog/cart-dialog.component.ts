@@ -8,7 +8,7 @@ import { AuthService } from '../../auth/auth.service';
 @Component({
   selector: 'app-cart-dialog',
   templateUrl: './cart-dialog.component.html',
-  imports: [CommonModule,MatSnackBarModule],
+  imports: [CommonModule, MatSnackBarModule],
   styleUrls: ['./cart-dialog.component.scss'],
 })
 export class CartDialogComponent {
@@ -56,46 +56,48 @@ export class CartDialogComponent {
   pedidosRecebidos: Product[][] = [];
 
   finalizarCompra() {
-  const user = JSON.parse(localStorage.getItem('user') || '{}');
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
 
-  const pedido = {
-    produtos: [...this.cartItems],
-    nome: user.name || '',
-    telefone: user.telephone || ''
-  };
+    const pedido = {
+      produtos: [...this.cartItems],
+      nome: user.name || '',
+      telefone: user.telephone || '',
+      data: new Date().toISOString(),
+      origem: 'local'
+    };
 
-  console.log('Pedido a ser enviado:', pedido);
+    console.log('Pedido a ser enviado:', pedido);
 
-  this.orderService.addPedido(pedido).subscribe({
-    next: () => {
-      this.clear();
-      this.snackBar.open('Compra finalizada com sucesso!', 'Fechar', {
-        duration: 3000,
-        horizontalPosition: 'right',
-        verticalPosition: 'top',
-        panelClass: ['snackbar-success']
-      });
-    },
-    error: (err) => {
-      console.error('Erro ao enviar pedido para API:', err);
-
-      // Fallback: salva localmente
-      const pedidosLocais = JSON.parse(localStorage.getItem('pedidosPendentes') || '[]');
-      pedidosLocais.push(pedido);
-      localStorage.setItem('pedidosPendentes', JSON.stringify(pedidosLocais));
-
-      this.clear();
-      this.snackBar.open(
-        'Pedido salvo localmente. Será enviado quando a conexão for restabelecida.',
-        'Fechar',
-        {
-          duration: 5000,
+    this.orderService.addPedido(pedido).subscribe({
+      next: () => {
+        this.clear();
+        this.snackBar.open('Compra finalizada com sucesso!', 'Fechar', {
+          duration: 3000,
           horizontalPosition: 'right',
           verticalPosition: 'top',
-          panelClass: ['snackbar-warning']
-        }
-      );
-    }
-  });
-}
+          panelClass: ['snackbar-success']
+        });
+      },
+      error: (err) => {
+        console.error('Erro ao enviar pedido para API:', err);
+
+        // Fallback: salva localmente
+        const pedidosLocais = JSON.parse(localStorage.getItem('pedidosPendentes') || '[]');
+        pedidosLocais.push(pedido);
+        localStorage.setItem('pedidosPendentes', JSON.stringify(pedidosLocais));
+
+        this.clear();
+        this.snackBar.open(
+          'Pedido salvo localmente. Será enviado quando a conexão for restabelecida.',
+          'Fechar',
+          {
+            duration: 5000,
+            horizontalPosition: 'right',
+            verticalPosition: 'top',
+            panelClass: ['snackbar-warning']
+          }
+        );
+      }
+    });
+  }
 }
