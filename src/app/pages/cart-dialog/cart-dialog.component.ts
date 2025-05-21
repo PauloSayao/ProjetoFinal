@@ -59,6 +59,7 @@ export class CartDialogComponent {
     const user = JSON.parse(localStorage.getItem('user') || '{}');
 
     const pedido = {
+       id: Date.now(),
       produtos: [...this.cartItems],
       nome: user.name || '',
       telefone: user.telephone || '',
