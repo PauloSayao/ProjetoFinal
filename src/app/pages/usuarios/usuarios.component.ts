@@ -19,10 +19,10 @@ export class UsuariosComponent {
   trufas: string[] = ['trufasmistas.jpg', 'trufasmistas2.jpg', 'trufasrealistas.jpg'];
   currentIndex = 0;
   intervalId: any;
-   
+
   constructor(
-    private cartService: CartService, 
-    private router: Router, 
+    private cartService: CartService,
+    private router: Router,
     private http: HttpClient
   ) {}
   addToCart(produto: Product) {
@@ -30,7 +30,7 @@ export class UsuariosComponent {
     this.cartService.addToCart(item);
   }
 
-  
+
   ngOnInit() {
     const user = JSON.parse(localStorage.getItem('user') || '{}');
     this.userName = user.name || 'Usuário';
