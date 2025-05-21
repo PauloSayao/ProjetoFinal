@@ -1,37 +1,42 @@
+<header class="site-header">
+  <img src="logo2.png" alt="Logo TruffleSite" class="logo" />
+  <h1>Compre suas Trufas</h1>
 
-  <header class="site-header">
-    <img src="logo2.png" alt="Logo TruffleSite" class="logo" />
-    <h1>Compre suas Trufas</h1>
-
-    <div class="perfil-wrapper">
-      <span class="welcome-message">Bem-vindo, {{ userName }}</span>
-      <div class="perfil-button-wrapper">
-        <button [mat-menu-trigger-for]="sidemenu" class="list">
-          <img class="perfil" src="perfil.png" alt="Perfil" />
-        </button>
-      </div>
+  <div class="perfil-wrapper">
+    <div class="perfil-button-wrapper">
+      <span class="welcome-text">Bem-vindo, {{ userName }}</span>
+      <button [matMenuTriggerFor]="sidemenu" class="list">
+        <img class="perfil" src="perfil.png" alt="Perfil" />
+      </button>
     </div>
+  </div>
 
-    <mat-menu #sidemenu>
-      <button class="btn-list" mat-menu-item (click)="logout()">Logout</button>
-    </mat-menu>
-  </header>
+  <mat-menu #sidemenu="matMenu">
+    <button mat-menu-item (click)="logout()">Logout</button>
+  </mat-menu>
+</header>
 
-  <section class="highlighted-trufas">
-    <h2>Conheça nossas Trufas Artesanais</h2>
+<section class="highlighted-trufas">
+  <h2>Conheça nossas Trufas Artesanais</h2>
 
-    <div class="carousel-wrapper">
-      <img [src]="trufas[currentIndex]" alt="Trufas artesanais" class="trufas-img" />
+  <div class="carousel-wrapper">
+    <button class="carousel-btn prev" (click)="prev()">‹</button>
+    <img [src]="trufas[currentIndex]" alt="Trufas artesanais" class="trufas-img" />
+    <button class="carousel-btn next" (click)="next()">›</button>
+  </div>
+</section>
 
-    </div>
-  </section>
-  <main class="products-section">
-    <div class="product-card" *ngFor="let produto of produtos">
-      <img [src]="produto.image" [alt]="produto.name" />
-      <h2>{{ produto.name }}</h2>
-      <p>{{ produto.descricao }}</p>
-      <span class="price">R$ {{ produto.price | number:'1.2-2' }}</span>
-      <button (click)="addToCart(produto)">Adicionar ao carrinho</button>
-    </div>
-  </main>
+<main class="products-section">
+  <div *ngIf="loading" class="loading-spinner">
+    <div class="spinner"></div>
+    <p>Carregando produtos...</p>
+  </div>
 
+  <div class="product-card" *ngFor="let produto of produtos">
+    <img [src]="produto.image" [alt]="produto.name" />
+    <h2>{{ produto.name }}</h2>
+    <p>{{ produto.descricao }}</p>
+    <span class="price">R$ {{ produto.price | number:'1.2-2' }}</span>
+    <button (click)="addToCart(produto)">Adicionar ao carrinho</button>
+  </div>
+</main>

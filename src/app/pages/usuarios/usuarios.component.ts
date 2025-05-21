@@ -1,54 +1,112 @@
-import { Router, RouterModule } from '@angular/router';
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Router } from '@angular/router';
+import { MatMenuModule } from '@angular/material/menu';
+import { CommonModule } from '@angular/common';
 import { CartService } from '../../cart/cart.service';
 import { Product } from '../../cart/cart.service';
-import { CommonModule } from '@angular/common';
-import { MatMenuModule } from '@angular/material/menu';
 import { HttpClient } from '@angular/common/http';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-usuarios',
-  imports: [CommonModule,RouterModule,MatMenuModule],
+  standalone: true,
+  imports: [CommonModule, MatMenuModule, MatSnackBarModule],
   templateUrl: './usuarios.component.html',
-  styleUrl: './usuarios.component.scss',
+  styleUrls: ['./usuarios.component.scss']
 })
-export class UsuariosComponent {
-
-  userName: string = '';
+export class UsuariosComponent implements OnInit, OnDestroy {
+  userName: string = 'Usuário';
   produtos: Product[] = [];
-  trufas: string[] = ['trufasmistas.jpg', 'trufasmistas2.jpg', 'trufasrealistas.jpg'];
+  loading: boolean = true;
+
+  // Carrossel de imagens
+  trufas: string[] = [
+    'trufasmistas.jpg',
+    'trufasmistas2.jpg',
+    'trufasrealistas.jpg'
+  ];
   currentIndex = 0;
   intervalId: any;
+
+  // Dados mockados como fallback
+  private fallbackProducts: Product[] = [
+    {
+      id: 1,
+      name: 'Trufa de Chocolate',
+      price: 5.0,
+      image: 'assets/images/trufachocolate.jpg',
+      descricao: 'Deliciosa trufa recheada com ganache de chocolate meio amargo.',
+      quantity: 1,
+      ativo: true
+    },
+    {
+      id: 2,
+      name: 'Trufa de Morango',
+      price: 5.5,
+      image: 'assets/images/trufamorango.jpg',
+      descricao: 'Trufa cremosa com recheio de morango e cobertura branca.',
+      quantity: 1,
+      ativo: true
+    }
+  ];
 
   constructor(
     private cartService: CartService,
     private router: Router,
-    private http: HttpClient
+    private http: HttpClient,
+    private snackBar: MatSnackBar
   ) {}
-  addToCart(produto: Product) {
-    const item: Product = { ...produto, quantity: produto.quantity ?? 1 };
-    this.cartService.addToCart(item);
-  }
-
 
   ngOnInit() {
-    const user = JSON.parse(localStorage.getItem('user') || '{}');
-    this.userName = user.name || 'Usuário';
-
-    this.http.get<Product[]>('/api/produtos')
-    .subscribe((res) => {
-      this.produtos = res.filter(p => p.ativo);
-    });
-
-    this.intervalId = setInterval(() => {
-      this.next();
-    }, 4000);
-
-
+    this.loadUserData();
+    this.loadProducts();
+    this.startCarousel();
   }
 
   ngOnDestroy() {
     clearInterval(this.intervalId);
+  }
+
+  private loadUserData() {
+    try {
+      const user = JSON.parse(localStorage.getItem('user') || '{}');
+      this.userName = user.name || 'Usuário';
+    } catch (error) {
+      console.error('Erro ao carregar dados do usuário:', error);
+    }
+  }
+
+  private loadProducts() {
+    this.http.get<Product[]>('/api/produtos').subscribe({
+      next: (res) => {
+        this.produtos = res.filter(p => p.ativo);
+        this.loading = false;
+      },
+      error: (err) => {
+        console.error('Erro ao carregar produtos, usando fallback:', err);
+        this.produtos = this.fallbackProducts;
+        this.loading = false;
+        this.snackBar.open('Erro ao carregar produtos. Mostrando dados locais.', 'Fechar', {
+          duration: 5000,
+          panelClass: ['error-snackbar']
+        });
+      }
+    });
+  }
+
+  private startCarousel() {
+    this.intervalId = setInterval(() => {
+      this.next();
+    }, 4000);
+  }
+
+  addToCart(produto: Product) {
+    const item: Product = { ...produto, quantity: produto.quantity ?? 1 };
+    this.cartService.addToCart(item);
+    this.snackBar.open(`${produto.name} adicionado ao carrinho!`, 'Fechar', {
+      duration: 3000,
+      panelClass: ['success-snackbar']
+    });
   }
 
   next() {
@@ -56,13 +114,11 @@ export class UsuariosComponent {
   }
 
   prev() {
-    this.currentIndex =
-      (this.currentIndex - 1 + this.trufas.length) % this.trufas.length;
+    this.currentIndex = (this.currentIndex - 1 + this.trufas.length) % this.trufas.length;
   }
 
   logout() {
     localStorage.removeItem('user');
     this.router.navigate(['/login']);
   }
-
 }
