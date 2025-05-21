@@ -13,7 +13,7 @@ interface Produto {
   quantity: number;
   ativo: boolean;
 }
-  
+
   @Component({
     selector: 'app-configuracao',
     standalone: true,

@@ -9,5 +9,4 @@ import { CartComponent } from '../cart/cart.component';
   styleUrl: './layout.component.scss'
 })
 export class LayoutComponent {
-
 }

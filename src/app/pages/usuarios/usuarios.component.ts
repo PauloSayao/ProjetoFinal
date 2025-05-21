@@ -20,8 +20,6 @@ export class UsuariosComponent {
   currentIndex = 0;
   intervalId: any;
    
-  
-
   constructor(
     private cartService: CartService, 
     private router: Router, 

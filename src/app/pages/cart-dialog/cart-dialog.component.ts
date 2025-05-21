@@ -30,7 +30,6 @@ export class CartDialogComponent {
       0
     );
   }
-
   addItem(id: number) {
     const item = this.cartItems.find((p) => p.id === id);
     if (item) {

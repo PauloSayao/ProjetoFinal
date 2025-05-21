@@ -7,7 +7,6 @@ import { Router } from '@angular/router';
 export class AuthService {
   userData: any = null;
   constructor(private http: HttpClient, private router: Router) {}
-
   login(name: string, password: string) {
     return this.http.post<any>('http://localhost:3001/login', { name, password }).subscribe({
       next: (res) => {

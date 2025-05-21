@@ -49,7 +49,6 @@ export class CartComponent {
   clear() {
     this.cartService.clearCart();
   }
-
   goToCart() {
     this.router.navigate(['/cart']); // ajuste conforme a rota que você configurou
   }

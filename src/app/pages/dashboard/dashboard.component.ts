@@ -31,7 +31,6 @@ export class DashboardComponent implements OnInit {
       error: err => console.error('Erro ao limpar pedidos:', err)
     });
   }
-
   removerPedido(id: number) {
     this.orderService.removePedido(id).subscribe({
       next: () => this.loadPedidos(),

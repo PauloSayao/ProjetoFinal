@@ -10,7 +10,6 @@ export interface Product {
   image: string;
   ativo: boolean;
 }
-
 @Injectable({
   providedIn: 'root'
 })

@@ -12,7 +12,6 @@ export interface Pedido {
 @Injectable({
   providedIn: 'root',
 })
-
 export class OrderService {
 
   private apiUrl = 'http://localhost:3001/pedidos';
