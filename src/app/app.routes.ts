@@ -44,7 +44,7 @@ export const routes: Routes = [
     component: ConfiguracaoComponent,
     canActivate: [AdminGuard],
   },
-  
+
   {
     path: '**',
     redirectTo: 'usuarios',
