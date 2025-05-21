@@ -2,31 +2,38 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Component } from '@angular/core';
 import { AuthService } from '../../auth/auth.service';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-login',
+  standalone: true,
   imports: [CommonModule, FormsModule, NgxMaskDirective],
   providers: [provideNgxMask()],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.scss',
+  styleUrls: ['./login.component.scss']
 })
 export class LoginComponent {
   isRegistering = false;
+  isLoading = false;
+  errorMessage = '';
 
-  // Campos para login
-  name = '';
-  password = '';
+  // Form models
+  loginForm = {
+    name: '',
+    password: ''
+  };
 
-  // Campos para registro
-  registerName = '';
-  fullName = '';
-  registerEmail = '';
-  registerPassword = '';
-  registerTelephone = '';
-  consentLGPD = false;
+  registerForm = {
+    name: '',
+    fullName: '',
+    email: '',
+    password: '',
+    telephone: '',
+    consentLGPD: false
+  };
 
   constructor(
     private authService: AuthService,
@@ -34,60 +41,121 @@ export class LoginComponent {
     private router: Router
   ) {}
 
-  toggleMode() {
+  // Public methods
+  toggleMode(): void {
     this.isRegistering = !this.isRegistering;
+    this.errorMessage = '';
+    this.resetForms();
   }
 
-  login() {
+  login(): void {
+    if (!this.validateLoginForm()) return;
 
-    this.http
-      .post<any>('http://localhost:3001/login', {
-        name: this.name,
-        password: this.password,
+    this.isLoading = true;
+    this.errorMessage = '';
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
       })
+    };
 
+    this.http.post<any>(
+      `${environment.apiUrl}/login`,
+      {
+        name: this.loginForm.name,
+        password: this.loginForm.password
+      },
+      httpOptions
+    ).subscribe({
+      next: (res) => this.handleLoginSuccess(res),
+      error: (err) => this.handleError(err),
+      complete: () => this.isLoading = false
+    });
+  }
+
+  register(): void {
+    if (!this.validateRegisterForm()) return;
+
+    this.isLoading = true;
+    this.errorMessage = '';
+
+    const { consentLGPD, ...formData } = this.registerForm;
+
+    this.http.post<any>(`${environment.apiUrl}/register`, formData)
       .subscribe({
-        next: (res) => {
-          localStorage.setItem('user', JSON.stringify(res));
-          if (res.role === 'admin') {
-            this.router.navigate(['/dashboard']);
-          } else {
-            this.router.navigate(['/usuarios']);
-          }
-        },
-
-        error: (err) => {
-          alert(err.error.message || 'Erro ao fazer login.');
-        },
-
+        next: () => this.handleRegisterSuccess(),
+        error: (err) => this.handleError(err),
+        complete: () => this.isLoading = false
       });
   }
 
-  register() {
-    if (!this.consentLGPD) {
-      alert('Você deve aceitar a política de privacidade (LGPD).');
-      return;
+  // Private methods
+  private resetForms(): void {
+    if (!this.isRegistering) {
+      this.registerForm = {
+        name: '',
+        fullName: '',
+        email: '',
+        password: '',
+        telephone: '',
+        consentLGPD: false
+      };
+    } else {
+      this.loginForm = { name: '', password: '' };
+    }
+  }
+
+  private validateLoginForm(): boolean {
+    if (!this.loginForm.name || !this.loginForm.password) {
+      this.errorMessage = 'Preencha todos os campos';
+      return false;
+    }
+    return true;
+  }
+
+  private handleLoginSuccess(response: any): void {
+    this.authService.setCurrentUser(response);
+    localStorage.setItem('user', JSON.stringify(response));
+
+    const redirect = response.role === 'admin' ? '/dashboard' : '/usuarios';
+    this.router.navigate([redirect]);
+  }
+
+  private validateRegisterForm(): boolean {
+    if (!this.registerForm.consentLGPD) {
+      this.errorMessage = 'Você deve aceitar a política de privacidade (LGPD).';
+      return false;
     }
 
-    this.http
-      .post<any>('http://localhost:3001/register', {
-        name: this.registerName,
-        fullName: this.fullName,
-        email: this.registerEmail,
-        password: this.registerPassword,
-        telephone: this.registerTelephone
-      })
+    const requiredFields = ['name', 'email', 'password', 'telephone'];
+    for (const field of requiredFields) {
+      if (!this.registerForm[field as keyof typeof this.registerForm]) {
+        this.errorMessage = 'Preencha todos os campos obrigatórios';
+        return false;
+      }
+    }
 
-      .subscribe({
-        next: (res) => {
-          alert('Cadastro realizado com sucesso!');
-          this.toggleMode(); // volta para login
-        },
+    if (!this.isValidEmail(this.registerForm.email)) {
+      this.errorMessage = 'Por favor, insira um e-mail válido';
+      return false;
+    }
 
-        error: (err) => {
-          alert(err.error.message || 'Erro ao cadastrar.');
-        },
+    return true;
+  }
 
-      });
+  private isValidEmail(email: string): boolean {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  }
+
+  private handleRegisterSuccess(): void {
+    alert('Cadastro realizado com sucesso!');
+    this.toggleMode();
+  }
+
+  private handleError(error: any): void {
+    this.errorMessage = error.error?.message || 
+      (this.isRegistering ? 'Erro ao cadastrar. Tente novamente.' : 'Erro ao fazer login. Verifique suas credenciais.');
+    this.isLoading = false;
   }
 }

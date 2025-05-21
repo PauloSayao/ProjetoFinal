@@ -1,4 +1,8 @@
 
+$bg-color: #f8f1e7;
+$primary: #2c3e50;
+$accent: #a93226;
+$font-main: "Playfair Display", serif;
 
 @use '@angular/material' as mat;
 
@@ -17,5 +21,6 @@ html {
 
 
 html, body { height: 100dvh; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif;
+background-color: $bg-color ;}
 
