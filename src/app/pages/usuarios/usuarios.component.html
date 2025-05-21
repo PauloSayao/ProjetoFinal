@@ -1,42 +1,50 @@
-<header class="site-header">
-  <img src="logo2.png" alt="Logo TruffleSite" class="logo" />
-  <h1>Compre suas Trufas</h1>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Comprar Trufas - TruffleSite</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="site-header">
+    <img src="logo2.png" alt="Logo TruffleSite" class="logo" />
+    <h1>Compre suas Trufas</h1>
 
-  <div class="perfil-wrapper">
-    <div class="perfil-button-wrapper">
-      <span class="welcome-text">Bem-vindo, {{ userName }}</span>
-      <button [matMenuTriggerFor]="sidemenu" class="list">
-        <img class="perfil" src="perfil.png" alt="Perfil" />
-      </button>
+    <div class="perfil-wrapper">
+      <span class="welcome-message">Bem-vindo, {{ userName }}</span>
+      <div class="perfil-button-wrapper">
+        <button [mat-menu-trigger-for]="sidemenu" class="list">
+          <img class="perfil" src="perfil.png" alt="Perfil" />
+        </button>
+      </div>
     </div>
-  </div>
 
-  <mat-menu #sidemenu="matMenu">
-    <button mat-menu-item (click)="logout()">Logout</button>
-  </mat-menu>
-</header>
+    <mat-menu #sidemenu>
+      <button class="btn-list" mat-menu-item (click)="logout()">Logout</button>
+    </mat-menu>
+  </header>
 
-<section class="highlighted-trufas">
-  <h2>Conheça nossas Trufas Artesanais</h2>
+  <section class="highlighted-trufas">
+    <h2>Conheça nossas Trufas Artesanais</h2>
 
-  <div class="carousel-wrapper">
-    <button class="carousel-btn prev" (click)="prev()">‹</button>
-    <img [src]="trufas[currentIndex]" alt="Trufas artesanais" class="trufas-img" />
-    <button class="carousel-btn next" (click)="next()">›</button>
-  </div>
-</section>
+    <div class="carousel-wrapper">
+      <img [src]="trufas[currentIndex]" alt="Trufas artesanais" class="trufas-img" />
 
-<main class="products-section">
-  <div *ngIf="loading" class="loading-spinner">
-    <div class="spinner"></div>
-    <p>Carregando produtos...</p>
-  </div>
+      <!-- <button class="carousel-btn prev" (click)="prev()">‹</button>
+      <button class="carousel-btn next" (click)="next()">›</button> -->
+    </div>
+  </section>
+  <main class="products-section">
+    <div class="product-card" *ngFor="let produto of produtos">
+      <img [src]="produto.image" [alt]="produto.name" />
+      <h2>{{ produto.name }}</h2>
+      <p>{{ produto.descricao }}</p>
+      <span class="price">R$ {{ produto.price | number:'1.2-2' }}</span>
+      <button (click)="addToCart(produto)">Adicionar ao carrinho</button>
+    </div>
+  </main>
 
-  <div class="product-card" *ngFor="let produto of produtos">
-    <img [src]="produto.image" [alt]="produto.name" />
-    <h2>{{ produto.name }}</h2>
-    <p>{{ produto.descricao }}</p>
-    <span class="price">R$ {{ produto.price | number:'1.2-2' }}</span>
-    <button (click)="addToCart(produto)">Adicionar ao carrinho</button>
-  </div>
-</main>
+
+</body>
+</html>
