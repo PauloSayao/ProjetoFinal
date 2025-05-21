@@ -6,6 +6,12 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
 
+// Dados mockados
+const users = [
+  { name: "admin", password: "123456", role: "admin", email: "admin@email.com", telephone: "123456789" },
+  { name: "user", password: "123456", role: "user", email: "user@email.com", telephone: "987654321" }
+];
+
 @Component({
   selector: 'app-login',
   imports: [CommonModule, FormsModule, NgxMaskDirective],
@@ -39,28 +45,19 @@ export class LoginComponent {
   }
 
   login() {
+    // Verificação nos dados mockados
+    const user = users.find(u => u.name === this.name && u.password === this.password);
 
-    this.http
-      .post<any>('/api/login', {
-        name: this.name,
-        password: this.password,
-      })
-
-      .subscribe({
-        next: (res) => {
-          localStorage.setItem('user', JSON.stringify(res));
-          if (res.role === 'admin') {
-            this.router.navigate(['/dashboard']);
-          } else {
-            this.router.navigate(['/usuarios']);
-          }
-        },
-
-        error: (err) => {
-          alert(err.error.message || 'Erro ao fazer login.');
-        },
-
-      });
+    if (user) {
+      localStorage.setItem('user', JSON.stringify(user));
+      if (user.role === 'admin') {
+        this.router.navigate(['/dashboard']);
+      } else {
+        this.router.navigate(['/usuarios']);
+      }
+    } else {
+      alert('Usuário ou senha incorretos.');
+    }
   }
 
   register() {
@@ -69,24 +66,27 @@ export class LoginComponent {
       return;
     }
 
-    this.http
-      .post<any>('/api/register', {
-        name: this.registerName,
-        fullName: this.fullName,
-        email: this.registerEmail,
-        password: this.registerPassword,
-        telephone: this.registerTelephone
-      })
+    // Verifica se o usuário já existe
+    const userExists = users.some(u => u.name === this.registerName || u.email === this.registerEmail);
 
-      .subscribe({
-        next: (res) => {
-          alert('Cadastro realizado com sucesso!');
-          this.toggleMode(); // volta para login
-        },
+    if (userExists) {
+      alert('Nome de usuário ou email já cadastrado.');
+      return;
+    }
 
-        error: (err) => {
-          alert(err.error.message || 'Erro ao cadastrar.');
-        },
-      });
+    // Adiciona novo usuário ao array mockado
+    const newUser = {
+      name: this.registerName,
+      password: this.registerPassword,
+      role: 'user',
+      email: this.registerEmail,
+      telephone: this.registerTelephone,
+      fullName: this.fullName
+    };
+
+    users.push(newUser);
+
+    alert('Cadastro realizado com sucesso!');
+    this.toggleMode(); // volta para login
   }
 }

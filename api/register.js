@@ -1,6 +1,6 @@
-import { users } from './dados.js';
+import { users } from '../dados.js';
 
-// export const config = { runtime: 'edge' };
+export const config = { runtime: 'edge' };
 
 export default async function handler(req) {
   if (req.method !== 'POST') return new Response(null, { status: 405 });
@@ -14,4 +14,3 @@ export default async function handler(req) {
   users.push({ name, password, email, fullName, telephone, role: "user" });
   return new Response(JSON.stringify({ message: "Usuário registrado com sucesso!" }), { status: 201 });
 }
-

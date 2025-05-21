@@ -1,6 +1,6 @@
 import { pedidos } from '../dados.js';
 
-// export const config = { runtime: 'edge' };
+export const config = { runtime: 'edge' };
 
 export default function handler(req) {
   const url = new URL(req.url);
