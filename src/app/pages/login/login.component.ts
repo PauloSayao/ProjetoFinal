@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Component } from '@angular/core';
 import { AuthService } from '../../auth/auth.service';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
 import { environment } from '../../../environments/environment';
@@ -41,25 +41,11 @@ export class LoginComponent {
     private router: Router
   ) {}
 
+  // Public methods
   toggleMode(): void {
     this.isRegistering = !this.isRegistering;
     this.errorMessage = '';
     this.resetForms();
-  }
-
-  private resetForms(): void {
-    if (!this.isRegistering) {
-      this.registerForm = {
-        name: '',
-        fullName: '',
-        email: '',
-        password: '',
-        telephone: '',
-        consentLGPD: false
-      };
-    } else {
-      this.loginForm = { name: '', password: '' };
-    }
   }
 
   login(): void {
@@ -68,30 +54,24 @@ export class LoginComponent {
     this.isLoading = true;
     this.errorMessage = '';
 
-    this.http.post<any>(`${environment.apiUrl}/login`, {
-      name: this.loginForm.name,
-      password: this.loginForm.password
-    }).subscribe({
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    };
+
+    this.http.post<any>(
+      `${environment.apiUrl}/login`,
+      {
+        name: this.loginForm.name,
+        password: this.loginForm.password
+      },
+      httpOptions
+    ).subscribe({
       next: (res) => this.handleLoginSuccess(res),
       error: (err) => this.handleError(err),
       complete: () => this.isLoading = false
     });
-  }
-
-  private validateLoginForm(): boolean {
-    if (!this.loginForm.name || !this.loginForm.password) {
-      this.errorMessage = 'Preencha todos os campos';
-      return false;
-    }
-    return true;
-  }
-
-  private handleLoginSuccess(response: any): void {
-    this.authService.setCurrentUser(response);
-    localStorage.setItem('user', JSON.stringify(response));
-
-    const redirect = response.role === 'admin' ? '/dashboard' : '/usuarios';
-    this.router.navigate([redirect]);
   }
 
   register(): void {
@@ -108,6 +88,38 @@ export class LoginComponent {
         error: (err) => this.handleError(err),
         complete: () => this.isLoading = false
       });
+  }
+
+  // Private methods
+  private resetForms(): void {
+    if (!this.isRegistering) {
+      this.registerForm = {
+        name: '',
+        fullName: '',
+        email: '',
+        password: '',
+        telephone: '',
+        consentLGPD: false
+      };
+    } else {
+      this.loginForm = { name: '', password: '' };
+    }
+  }
+
+  private validateLoginForm(): boolean {
+    if (!this.loginForm.name || !this.loginForm.password) {
+      this.errorMessage = 'Preencha todos os campos';
+      return false;
+    }
+    return true;
+  }
+
+  private handleLoginSuccess(response: any): void {
+    this.authService.setCurrentUser(response);
+    localStorage.setItem('user', JSON.stringify(response));
+
+    const redirect = response.role === 'admin' ? '/dashboard' : '/usuarios';
+    this.router.navigate([redirect]);
   }
 
   private validateRegisterForm(): boolean {
