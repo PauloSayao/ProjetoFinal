@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Product } from '../../cart/cart.service';
 import { OrderService, Pedido } from '../../order/order.service';
 import { CommonModule } from '@angular/common';
@@ -15,56 +15,83 @@ import { RouterModule, Router } from '@angular/router';
 export class DashboardComponent implements OnInit {
   pedidos: Pedido[] = [];
 
-  constructor(private orderService: OrderService, private router: Router) { }
+  constructor(private orderService: OrderService, private router: Router, private cdr: ChangeDetectorRef) { }
 
   ngOnInit() {
     this.loadPedidos();
   }
+
   loadPedidos() {
-  // Primeiro carrega do localStorage (mais rápido)
-  const pedidosLocais = JSON.parse(localStorage.getItem('pedidosLocais') || '[]') as Pedido[];
-  
-  // Depois tenta da API (adiciona aos locais)
-  this.orderService.getPedidos().subscribe({
-    next: (dados) => {
-      // Filtra para evitar duplicatas (opcional)
-      const novosPedidos = dados.filter(apiPedido => 
-        !pedidosLocais.some(localPedido => localPedido.id === apiPedido.id)
-      );
+    try {
+      // 1. Carrega pedidos locais primeiro
+      const pedidosLocais = this.getPedidosLocais();
       
-      this.pedidos = [...pedidosLocais, ...novosPedidos]
-    },
-    error: (err) => {
-      console.error('Erro ao carregar pedidos da API:', err);
-      this.pedidos = pedidosLocais
+      // 2. Tenta carregar da API
+      this.orderService.getPedidos().subscribe({
+        next: (dados) => {
+          // Combina e remove duplicatas (priorizando API)
+          this.pedidos = this.combinarPedidos(pedidosLocais, dados);
+          this.cdr.detectChanges(); // Força atualização da view
+        },
+        error: (err) => {
+          console.error('Erro ao carregar pedidos da API:', err);
+          this.pedidos = pedidosLocais;
+          this.cdr.detectChanges(); // Força atualização da view
+        }
+      });
+    } catch (e) {
+      console.error('Erro ao carregar pedidos:', e);
+      this.pedidos = [];
+      this.cdr.detectChanges();
     }
-  });
-}
+  }
+
+  private getPedidosLocais(): Pedido[] {
+    try {
+      return JSON.parse(localStorage.getItem('pedidosLocais') || '[]');
+    } catch (e) {
+      console.error('Erro ao ler pedidos locais:', e);
+      return [];
+    }
+  }
+
+  private combinarPedidos(locais: Pedido[], api: Pedido[]): Pedido[] {
+    // Filtra pedidos locais que não existem na API
+    const locaisUnicos = locais.filter(local => 
+      !api.some(apiPedido => apiPedido.id === local.id)
+    );
+    
+    return [...locaisUnicos, ...api];
+  }
 
   limparPedidos() {
     this.orderService.limparPedidos().subscribe({
-      next: () =>  {
+      next: () => {
         this.pedidos = [];
-        localStorage.removeItem('pedidosLocais'); // Limpa local também
+        localStorage.removeItem('pedidosLocais');
+        this.cdr.detectChanges();
       },
       error: err => console.error('Erro ao limpar pedidos:', err)
     });
   }
+
   removerPedido(id: number) {
-    // Primeiro remove localmente, depois API
-    const pedidosLocais = JSON.parse(localStorage.getItem('pedidosLocais') || '[]') as Pedido[];
-    const indexLocal = pedidosLocais.findIndex(p => p.id === id);
-    if (indexLocal > -1) {
-      pedidosLocais.splice(indexLocal, 1);
-      localStorage.setItem('pedidosLocais', JSON.stringify(pedidosLocais));
-      this.loadPedidos(); // Recarrega lista
-      return;
-    }
-     this.orderService.removePedido(id).subscribe({
+    // Remove localmente primeiro
+    const pedidosLocais = this.getPedidosLocais();
+    const updatedLocais = pedidosLocais.filter(p => p.id !== id);
+    
+    localStorage.setItem('pedidosLocais', JSON.stringify(updatedLocais));
+    
+    // Tenta remover da API
+    this.orderService.removePedido(id).subscribe({
       next: () => this.loadPedidos(),
-      error: err => console.error('Erro ao remover pedido:', err)
+      error: err => {
+        console.error('Erro ao remover da API, mantendo local:', err);
+        this.loadPedidos();
+      }
     });
   }
+
   logout() {
     localStorage.removeItem('user');
     this.router.navigate(['/login']);
