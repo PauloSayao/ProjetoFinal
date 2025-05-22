@@ -7,6 +7,7 @@ import { CartComponent } from './pages/cart/cart.component';
 import { AdminGuard } from './guard/admin.guard';
 import { AuthGuard } from './guard/usuarios.guard';
 import { ConfiguracaoComponent } from './pages/configuracao/configuracao.component';
+import { PrivacyPolicyComponent } from './pages/privacy-policy/privacy-policy.component';
 
 export const routes: Routes = [
   {
@@ -43,6 +44,10 @@ export const routes: Routes = [
     path: 'configuracao',
     component: ConfiguracaoComponent,
     canActivate: [AdminGuard],
+  },
+  {
+    path: 'politica-de-privacidade', 
+    component: PrivacyPolicyComponent
   },
 
   {
