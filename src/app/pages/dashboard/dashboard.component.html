@@ -22,8 +22,8 @@
       <div *ngIf="pedidos.length === 0">
         <p>Nenhum pedido encontrado.</p>
       </div>
-      <div *ngFor="let pedido of pedidos">
-        {{ pedido | json }} <!-- Isso mostrará todos os pedidos no template -->
+      <div class="pedidoslist" *ngFor="let pedido of pedidos">
+
 
         <h3>Pedido</h3>
         <p><strong>Nome:</strong> {{ pedido.nome }}</p>
