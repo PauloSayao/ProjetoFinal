@@ -21,16 +21,22 @@ export class DashboardComponent implements OnInit {
     this.loadPedidos();
   }
   loadPedidos() {
+  // Primeiro carrega do localStorage (mais rápido)
+  const pedidosLocais = JSON.parse(localStorage.getItem('pedidosLocais') || '[]') as Pedido[];
+  
+  // Depois tenta da API (adiciona aos locais)
   this.orderService.getPedidos().subscribe({
-    next: dados => {
-      const pedidosLocais = JSON.parse(localStorage.getItem('pedidosLocais') || '[]') as Pedido[];
-      this.pedidos = [...dados, ...pedidosLocais];
+    next: (dados) => {
+      // Filtra para evitar duplicatas (opcional)
+      const novosPedidos = dados.filter(apiPedido => 
+        !pedidosLocais.some(localPedido => localPedido.id === apiPedido.id)
+      );
       
+      this.pedidos = [...pedidosLocais, ...novosPedidos]
     },
-    error: err => {
+    error: (err) => {
       console.error('Erro ao carregar pedidos da API:', err);
-      const pedidosLocais = JSON.parse(localStorage.getItem('pedidosLocais') || '[]') as Pedido[];
-      this.pedidos = pedidosLocais;
+      this.pedidos = pedidosLocais
     }
   });
 }

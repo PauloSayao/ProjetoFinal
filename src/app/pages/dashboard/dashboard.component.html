@@ -4,7 +4,7 @@
     <nav>
       <ul>
         <li><button (click)="ToHome()">Início</button></li>
-        <li><button (click)="ToOrder()" >Pedidos</button></li>
+        <li><button (click)="ToOrder()">Pedidos</button></li>
         <li><button (click)="ToConfiguration()">Configurações</button></li>
         <li><button (click)="logout()"> Logout</button></li>
       </ul>
@@ -22,8 +22,9 @@
       <div *ngIf="pedidos.length === 0">
         <p>Nenhum pedido encontrado.</p>
       </div>
-      <div class="pedidoslist" *ngFor="let pedido of pedidos">
-
+      <div *ngFor="let pedido of pedidos">
+        {{ pedido | json }} 
+      </div>
       <h3>Pedido</h3>
       <p><strong>Nome:</strong> {{ pedido.nome }}</p>
       <p><strong>Telefone:</strong> {{ pedido.telefone }}</p>
@@ -34,9 +35,9 @@
         </li>
       </ul>
       <button class="remover-pedido" (click)="removerPedido(pedido.id)">Entregue</button>
-    </div>
+</div>
 
-      <button (click)="limparPedidos()">Limpar Todos os Pedidos</button>
-    </section>
-  </main>
+<button (click)="limparPedidos()">Limpar Todos os Pedidos</button>
+</section>
+</main>
 </div>
