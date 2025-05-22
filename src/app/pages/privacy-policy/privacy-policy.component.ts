@@ -7,5 +7,7 @@ import { Component } from '@angular/core';
   styleUrl: './privacy-policy.component.scss'
 })
 export class PrivacyPolicyComponent {
-
+  contactEmail = 'privacidade@trufflesite.com';
+  contactPhone = '(XX) XXXX-XXXX';
+  lastUpdateDate = new Date().toLocaleDateString('pt-BR');
 }
