@@ -23,21 +23,21 @@
         <p>Nenhum pedido encontrado.</p>
       </div>
       <div *ngFor="let pedido of pedidos">
-        {{ pedido | json }} 
-      </div>
-      <h3>Pedido</h3>
-      <p><strong>Nome:</strong> {{ pedido.nome }}</p>
-      <p><strong>Telefone:</strong> {{ pedido.telefone }}</p>
-      <p *ngIf="pedido.origem === 'local'" style="color: orange;">⚠️ Pedido salvo localmente</p>
-      <ul>
-        <li *ngFor="let p of pedido.produtos">
-          {{ p.name }} - {{ p.quantity }} x {{ p.price | currency }}
-        </li>
-      </ul>
-      <button class="remover-pedido" (click)="removerPedido(pedido.id)">Entregue</button>
-</div>
+        {{ pedido | json }} <!-- Isso mostrará todos os pedidos no template -->
 
-<button (click)="limparPedidos()">Limpar Todos os Pedidos</button>
-</section>
-</main>
+        <h3>Pedido</h3>
+        <p><strong>Nome:</strong> {{ pedido.nome }}</p>
+        <p><strong>Telefone:</strong> {{ pedido.telefone }}</p>
+        <p *ngIf="pedido.origem === 'local'" style="color: orange;">⚠️ Pedido salvo localmente</p>
+        <ul>
+          <li *ngFor="let p of pedido.produtos">
+            {{ p.name }} - {{ p.quantity }} x {{ p.price | currency }}
+          </li>
+        </ul>
+        <button class="remover-pedido" (click)="removerPedido(pedido.id)">Entregue</button>
+      </div>
+
+      <button (click)="limparPedidos()">Limpar Todos os Pedidos</button>
+    </section>
+  </main>
 </div>
