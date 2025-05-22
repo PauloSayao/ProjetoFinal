@@ -1,14 +1,17 @@
 // Variáveis
-$bg-color: #f8f1e7;
-$primary: #2C3E50;
-$accent: #A93226;
-$font-main: 'Playfair Display', serif;
+$bg-color: #F5EDE0;
+$primary: #5D4037;
+$accent: #8D6E63;
+$highlight: #D7CCC8;
+$font-main: 'Cormorant Garamond', serif;
+$font-secondary: 'Cabin', sans-serif;
 
 // Reset base
 body {
 
   font-family: $font-main;
   background-color: $bg-color;
+  background-image: url('https://www.transparenttextures.com/patterns/cream-paper.png');
   display: flex;
   align-items: center;
   justify-content: center;
@@ -25,8 +28,8 @@ body {
   background: white;
   border-radius: 20px;
   overflow: hidden;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-  border: 2px solid $accent;
+  border: 1px solid darken($highlight, 15%);
+  box-shadow: 0 5px 15px rgba(94, 63, 55, 0.1);
 
   @media (max-width: 768px) {
     flex-direction: column;
@@ -36,6 +39,7 @@ body {
 
 // Seção da logo
 .logo-section {
+  background: linear-gradient(to bottom, $primary, lighten($primary, 10%));
   background-color: $primary;
   color: white;
   flex: 1;
@@ -140,7 +144,7 @@ body {
       transition: background 0.3s;
 
       &:hover {
-        background-color: darken($accent, 10%);
+        background: lighten($primary, 5%);
       }
 
       @media (max-width: 480px) {
@@ -170,7 +174,7 @@ body {
 
 .link-button {
   background: none !important;
-  border: none!important;
+  border: none !important;
   padding: 0 !important;
   margin: 0 !important;
   font: inherit;

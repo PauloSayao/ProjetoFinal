@@ -1,8 +1,9 @@
-$bg-color: #f8f1e7;
-$primary: #2C3E50;
-$accent: #A93226;
-$font-main: 'Playfair Display', serif;
-
+$bg-color: #F5EDE0; // Fundo creme (papel craft)
+$primary: #5D4037;  // Marrom escuro rústico
+$accent: #8D6E63;   // Marrom médio (terra)
+$highlight: #D7CCC8; // Bege claro
+$font-main: "Cormorant Garamond", serif; // Fonte rústica
+$font-secondary: "Cabin", sans-serif; // Fonte complementar
 .main-content {
     flex: 1;
     padding: 2rem;
